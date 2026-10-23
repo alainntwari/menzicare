@@ -4,7 +4,7 @@ $d = (int)($_GET['day'] ?? 0);
 $div_id = (int)($_GET['div'] ?? 0);
 $ds_id = (int)($_GET['ds_id'] ?? 0);
  
-$prevclick = 'prev_day_'.$div_id.'()';
+$prevclick = 'prev_day('.$div_id.')';
 ?> 
 
 <div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo e($prevclick); ?>">
@@ -44,7 +44,7 @@ $prevclick = 'prev_day_'.$div_id.'()';
                 <?php
               }
 
-              $onclick = 'next_day_'.$div_id.'()';
+              $onclick = 'next_day('.$div_id.')';
           }
       }
 

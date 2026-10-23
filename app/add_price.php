@@ -18,6 +18,6 @@ else{
 }
 
 if($res){
-	alert_redirect('Updated', '../users/');
+	flash_redirect('Updated', '../users/', 'success');
 }
-alert_redirect('Error, please contact super admin', '../users/');
+flash_redirect('Error, please contact super admin', '../users/');

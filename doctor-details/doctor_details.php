@@ -364,7 +364,7 @@ $map = $row2['map'];
                                               <?php
                                             }
 
-                                            $onclick = 'next_day_'.$div_id.'()';
+                                            $onclick = 'next_day('.$div_id.')';
                                           ?> 
                                           
                                           

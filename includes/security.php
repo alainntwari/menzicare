@@ -35,17 +35,71 @@ function e_url($url)
     return e($url);
 }
 
-// Escape a JS string for use inside alert('...') in an HTML <script>.
+// Escape a value as a JS string literal for an inline <script>.
 function js_str($value)
 {
     return json_encode((string)$value, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
 }
 
-// Show an alert and redirect - the pattern the app already uses everywhere.
-function alert_redirect($message, $location)
+/* ---------------------------------------------------------------------
+ * Flash messages
+ * ------------------------------------------------------------------- */
+
+// True for requests made by assets/js/menzicare.js (fetch with X-Requested-With).
+function is_ajax()
 {
-    echo '<script>alert(' . js_str($message) . ');window.location=' . js_str($location) . ';</script>';
+    return !empty($_SERVER['HTTP_X_REQUESTED_WITH']);
+}
+
+// Queue a message to show on the next page. $type: success, error, warning or info.
+function flash($message, $type = 'info')
+{
+    $_SESSION['flash'][] = ['type' => $type, 'message' => (string)$message];
+}
+
+function flash_html($message, $type)
+{
+    $classes = ['success' => 'success', 'error' => 'danger', 'warning' => 'warning', 'info' => 'info'];
+    $class = $classes[$type] ?? 'info';
+    $role = $type === 'error' ? 'alert' : 'status';
+    return '<div class="alert alert-' . $class . ' alert-dismissible menzi-flash" role="' . $role . '">'
+        . e($message)
+        . '<button type="button" class="close" aria-label="Close" onclick="this.parentNode.remove()"><span aria-hidden="true">&times;</span></button>'
+        . '</div>';
+}
+
+/**
+ * Show a message and send the user to another page.
+ * AJAX requests get the message as HTML instead (shown where the content would load).
+ */
+function flash_redirect($message, $location, $type = 'error')
+{
+    if (is_ajax()) {
+        echo flash_html($message, $type);
+        exit();
+    }
+    flash($message, $type);
+    if (!headers_sent()) {
+        header('Location: ' . $location);
+    } else {
+        echo '<script>window.location=' . js_str($location) . ';</script>';
+    }
     exit();
+}
+
+// Print queued messages (called from the page layout and the login pages).
+function render_flash()
+{
+    if (empty($_SESSION['flash'])) {
+        return '';
+    }
+    $html = '<div class="menzi-flash-stack">';
+    foreach ($_SESSION['flash'] as $f) {
+        $html .= flash_html($f['message'], $f['type']);
+    }
+    unset($_SESSION['flash']);
+    // Success / info messages fade away by themselves; errors stay until closed
+    return $html . '</div><script>setTimeout(function(){document.querySelectorAll(".menzi-flash.alert-success,.menzi-flash.alert-info").forEach(function(el){el.remove();});},6000);</script>';
 }
 
 /* ---------------------------------------------------------------------
@@ -126,14 +180,14 @@ function current_institution()
 function deny_access($message = 'You do not have permission to access this page')
 {
     http_response_code(403);
-    alert_redirect($message, is_logged_in() ? '../home/' : '../login/');
+    flash_redirect($message, is_logged_in() ? '../home/' : '../login/');
 }
 
 function require_login()
 {
     if (!is_logged_in()) {
         http_response_code(401);
-        alert_redirect('Please login to your account first', '../login/');
+        flash_redirect('Please login to your account first', '../login/', 'info');
     }
 }
 
@@ -196,6 +250,63 @@ function can_request_patient_access($patient_id)
     return false;
 }
 
+/**
+ * Users matching a login: their login code, or their phone number
+ * (with or without a leading 0 / +250). Exact code matches come first.
+ */
+function find_users_by_login($login)
+{
+    $login = trim((string)$login);
+    if ($login === '') {
+        return [];
+    }
+    $users = [];
+    $res = db_query("SELECT * FROM users WHERE code = ?", [$login]);
+    while ($res instanceof mysqli_result && ($row = mysqli_fetch_assoc($res))) {
+        $users[$row['user_id']] = $row;
+    }
+    $digits = preg_replace('/\D/', '', $login);
+    if (strlen($digits) >= 9) {
+        $local = preg_replace('/^(250|0)/', '', $digits);
+        $res = db_query("SELECT * FROM users WHERE phone_number IN (?, ?, ?)", [$local, '0' . $local, $digits]);
+        while ($res instanceof mysqli_result && ($row = mysqli_fetch_assoc($res))) {
+            $users[$row['user_id']] = $row;
+        }
+    }
+    return array_values($users);
+}
+
+function find_user_by_login($login)
+{
+    $users = find_users_by_login($login);
+    return $users ? $users[0] : null;
+}
+
+/* ---------------------------------------------------------------------
+ * Audit log (see database/migrations/002_audit_and_reminders.sql)
+ * ------------------------------------------------------------------- */
+
+/**
+ * Record who did what to which patient/booking. Never breaks the page:
+ * if the audit table is missing the entry goes to the PHP error log instead.
+ * $context keys: user_id (defaults to the logged-in user), patient_id, booking_id, details.
+ */
+function audit($action, array $context = [])
+{
+    $user_id = $context['user_id'] ?? ($_SESSION['id'] ?? null);
+    $details = $context['details'] ?? null;
+    if (is_array($details)) {
+        $details = json_encode($details);
+    }
+    $ok = db_query(
+        "INSERT INTO audit_log (al_user_id, al_action, al_patient_id, al_booking_id, al_details, al_ip, al_created_at) VALUES (?,?,?,?,?,?,NOW())",
+        [$user_id, $action, $context['patient_id'] ?? null, $context['booking_id'] ?? null, $details, $_SERVER['REMOTE_ADDR'] ?? 'cli']
+    );
+    if (!$ok) {
+        error_log('MenziCare audit: ' . json_encode(['action' => $action, 'user' => $user_id] + $context));
+    }
+}
+
 /* ---------------------------------------------------------------------
  * Passwords
  * ------------------------------------------------------------------- */
@@ -247,7 +358,7 @@ function csrf_verify()
     $sent = isset($_POST['csrf_token']) ? (string)$_POST['csrf_token'] : '';
     if ($sent === '' || empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $sent)) {
         http_response_code(419);
-        alert_redirect('Your session has expired or the form is invalid. Please try again.', '../home/');
+        flash_redirect('Your session has expired or the form is invalid. Please try again.', '../home/');
     }
 }
 

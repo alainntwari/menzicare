@@ -13,9 +13,9 @@ $cow = db_row("SELECT count(*) AS total from doctors_specialities where ds_ref_u
 if($cow['total'] == 0){
  	$res = db_query("INSERT INTO doctors_specialities (ds_ref_user,ds_ref_sp_id) VALUES (?,?)", [$user, $specialty]);
  	if($res){
- 		alert_redirect('Successfully saved', '../users/');
+ 		flash_redirect('Successfully saved', '../users/', 'success');
  	}
- 	alert_redirect('Failed to insert into database', '../users/');
+ 	flash_redirect('Failed to insert into database', '../users/');
 }
 // already exists
-alert_redirect('user already exists', '../users/');
+flash_redirect('user already exists', '../users/');

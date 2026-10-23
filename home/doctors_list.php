@@ -107,7 +107,7 @@
                                     </p>-->
                                   </div>
                                   <div class="col-sm-6 emphasis"><a href="<?php echo e('#a'.$div_id); ?>">
-                                    <button type="button" class="btn btn-primary btn-sm" id="<?php echo e('d'.$div_id); ?>">
+                                    <button type="button" class="btn btn-primary btn-sm js-details-toggle" data-panel="<?php echo e('a'.$div_id); ?>">
                                       <i class="fa fa-eye"> </i> More Details
                                     </button></a>
                                   </div>
@@ -115,7 +115,7 @@
                               </div>
                             </div>
 
-                            <div id="<?php echo e('a'.$div_id); ?>" style="display: none;" class="col-md-10">
+                            <div id="<?php echo e('a'.$div_id); ?>" style="display: none;" class="col-md-10 js-details-panel">
                               <div class="row">
                                 <div class="col-md-12 col-sm-12 x_panel">
                                   
@@ -163,7 +163,7 @@
                                               <?php
                                             }
 
-                                            $onclick = 'next_day_'.$div_id.'()';
+                                            $onclick = 'next_day('.$div_id.')';
                                           ?> 
                                           
                                           

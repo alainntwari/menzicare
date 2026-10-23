@@ -21,9 +21,12 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link rel="icon" href="../assets/images/logo2.png" type="image/png" />
+    <link href="../assets/css/menzicare.css" rel="stylesheet">
   </head>
 
   <body class="login">
+    <?php echo render_flash(); ?>
     <div>
       <a class="hiddenanchor" id="signup"></a>
       <a class="hiddenanchor" id="signin"></a>
@@ -35,14 +38,14 @@
 <?php echo csrf_field(); ?>
               <h1>Login Form</h1>
               <div>
-                <input type="text" class="form-control" placeholder="code" required="required" id="code" name="code" />
+                <input type="text" class="form-control" placeholder="Login code or phone number" required="required" id="code" name="code" autocomplete="username" />
               </div>
               <div>
                 <input type="password" class="form-control" placeholder="Password" required="required" name="password" id="password" />
               </div>
               <div>
                 <input type="submit" name="submit" class="btn btn-success submit" value="Log in">
-                <a class="reset_pass" href="#">Lost your password?</a>
+                <a class="reset_pass" href="../app/forgot_password.php">Forgot your password?</a>
               </div>
 
               <div class="clearfix"></div>
@@ -57,7 +60,7 @@
 
                 <div>
                   <img src="../assets/images/logo2.png" width="100px" />
-                  <!--<p>©2021 All rights reserved</p>-->
+                  <!--<p>©<?php echo date('Y'); ?> MenziCare. All rights reserved.</p>-->
                 </div>
               </div>
             </form>
@@ -103,7 +106,7 @@
 
                 <div>
                   <img src="../assets/images/logo2.png" width="100px" />
-                  <p>©2021 All rights reserved</p>
+                  <p>©<?php echo date('Y'); ?> MenziCare. All rights reserved.</p>
                 </div>
               </div>
             </form>

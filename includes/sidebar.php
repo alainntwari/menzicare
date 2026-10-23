@@ -212,6 +212,7 @@ else{
               }
               ?>
               <li class="<?php echo e($class); ?>"><a href="../online-users/"><i class="fa fa-user"></i>Registered Patients</a></li>
+              <li class="<?php echo e($active_page == 'audit-log' ? 'active' : ''); ?>"><a href="../audit-log/"><i class="fa fa-history"></i>Audit Log</a></li>
               <?php
             }
           }

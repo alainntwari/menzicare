@@ -12,6 +12,6 @@ if (!can_manage_service($service)) {
 
 $res = db_query("INSERT into education (e_certificate,e_type,e_ref_service,e_institute) values (?,?,?,?)", [$certificate, $type, $service, $institute]);
 if($res){
-	alert_redirect('added', '../users/');
+	flash_redirect('Added successfully', '../users/', 'success');
 }
-alert_redirect('Error, please contact super admin', '../users/');
+flash_redirect('Error, please contact super admin', '../users/');

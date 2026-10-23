@@ -32,18 +32,18 @@
           <thead>
 
             <tr>
-              <th>User <font style="opacity:0.0; color:white;">RejectRejectRejectRejectReject</font></th>
-              <th>Code <font style="opacity:0.0; color:white;">RejectRejectRejectRejectReject</font></th>
+              <th class="menzi-col-wide">User</th>
+              <th class="menzi-col-wide">Code</th>
               
               <th>Date & Time</th>
-              <th>Service <font style="opacity:0.0; color:white;">RejectRejectRejectRejectRejec</font></th>
+              <th class="menzi-col-wide">Service</th>
 
               <th>status</th>
               <?php
               if($_SESSION['role'] == 2 || $_SESSION['role'] == 4){
                 ?>
-              <th>Medical Records <font style="opacity:0.0; color:white;">ApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApprove </font></th>
-              <th>Medecines schedule <font style="opacity:0.0; color:white;">ApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApprove </font></th>
+              <th class="menzi-col-form">Medical Records</th>
+              <th class="menzi-col-form">Medecines schedule</th>
                 <?php
               }
               ?>

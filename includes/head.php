@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <link rel="icon" href="images/favicon.ico" type="image/ico" />
+	  <link rel="icon" href="../assets/images/logo2.png" type="image/png" />
 
     <title>MENZICARE </title>
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
@@ -69,4 +69,5 @@
     
     </style>
     
+    <link href="../assets/css/menzicare.css" rel="stylesheet">
   </head>

@@ -30,6 +30,6 @@ require_login();
 
 		AioNem_Net_API_SMS_Send_Net("+250".$user_number, $date." is your appointment date for ". $item_name. " vaccine at ".$hospital_name.". Appointment code number is ".$code);
 
-		alert_redirect('Saved Successfully', '../vaccinations/');
+		flash_redirect('Saved Successfully', '../vaccinations/', 'success');
 	} 
-	alert_redirect('Error while inserting in Database', '../vaccinations/');
+	flash_redirect('Error while inserting in Database', '../vaccinations/');

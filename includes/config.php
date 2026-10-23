@@ -45,7 +45,7 @@ require_once __DIR__ . '/security.php';
 if (is_logged_in() && isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > SESSION_TIMEOUT) {
     $_SESSION = [];
     session_regenerate_id(true);
-    alert_redirect('Your session has ended due to 30 minutes of inactivity, please login to your account again', '../login/');
+    flash_redirect('Your session ended after 30 minutes of inactivity. Please login again.', '../login/', 'info');
 }
 $_SESSION['LAST_ACTIVITY'] = time();
 

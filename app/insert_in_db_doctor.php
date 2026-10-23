@@ -38,6 +38,6 @@ require_login();
 			AioNem_Net_API_SMS_Send_Net("+250".$institution_number," A new doctor booking");
 		}
 
-		alert_redirect('Saved Successfully', '../doctor-appointments/');
+		flash_redirect('Saved Successfully', '../doctor-appointments/', 'success');
 	} 
-	alert_redirect('Error while inserting in Database', '../doctor-appointments/');
+	flash_redirect('Error while inserting in Database', '../doctor-appointments/');

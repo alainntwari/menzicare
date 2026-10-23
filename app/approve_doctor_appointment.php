@@ -18,6 +18,7 @@ $res = db_query(
 	[$order_number, $by, $today, $current_time, $booking_id]
 );
 if ($res) {
+	audit('appointment_approved', ['booking_id' => $booking_id]);
 		// SMS the patient of THIS booking (it used to pick the latest booking in the system)
 		$vop1 = db_row("SELECT * FROM bookings_third_view where b_id = ?", [$booking_id]);
 		$vop = $vop1 ? db_row("SELECT * FROM users where user_id = ?", [$vop1['b_ref_user']]) : null;
@@ -27,6 +28,6 @@ if ($res) {
 			AioNem_Net_API_SMS_Send_Net("+250".$vop['phone_number'], $date_time." is your appointment. Order number is ".$order_number);
 		}
 
-	alert_redirect('Appointment approved. Now waiting for the client to make payment', '../appointments/');
+	flash_redirect('Appointment approved. Now waiting for the client to make payment', '../appointments/', 'success');
 }
-alert_redirect('Error, please contact super admin', '../appointments/');
+flash_redirect('Error, please contact super admin', '../appointments/');

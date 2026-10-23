@@ -16,9 +16,9 @@ $cow = db_row("SELECT count(*) AS total from doctors_availability where da_ref_d
 if($cow['total'] == 0){
  	$res = db_query("INSERT INTO doctors_availability (da_ref_ds_id,da_day,da_start_time,da_end_time,da_max_patients) VALUES (?,?,?,?,?)", [$ds_id, $day, $start_time, $end_time, $max]);
  	if($res){
- 		alert_redirect('Successfully saved', '../users/');
+ 		flash_redirect('Successfully saved', '../users/', 'success');
  	}
- 	alert_redirect('Failed to insert into database', '../users/');
+ 	flash_redirect('Failed to insert into database', '../users/');
 }
 // already exists
-alert_redirect('Schedule Already saved in database', '../users/');
+flash_redirect('Schedule Already saved in database', '../users/');

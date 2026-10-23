@@ -11,6 +11,6 @@ if (!can_manage_service($service)) {
 
 $res = db_query("INSERT into payments (p_payment,p_type,p_ref_service) values (?,?,?)", [$payment_method, $type, $service]);
 if($res){
-	alert_redirect('added', '../users/');
+	flash_redirect('Added successfully', '../users/', 'success');
 }
-alert_redirect('Error, please contact super admin', '../users/');
+flash_redirect('Error, please contact super admin', '../users/');

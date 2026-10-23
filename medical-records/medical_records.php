@@ -1,9 +1,8 @@
 <?php defined('MENZICARE_APP') || exit; ?>
   <?php
-   if($_SESSION['role'] == 4){
-   	$patient_id = $_SESSION['id'];
-   }
-  ?> 
+  // Whose records: set $patient_id before including (patients/history.php), defaults to the logged-in patient
+  $patient_id = (int)($patient_id ?? $_SESSION['id']);
+  ?>
   <div class="page-title">
     <div class="title_left">
     </div>
@@ -41,7 +40,6 @@
 			           </thead>
 			           <tbody>
 			           	<?php 
-			           	$patient_id = (int)$_SESSION['id'];
 			           	$query = "SELECT * FROM medical_records where user_id = ? order by dn_id desc";
 			           	$res = db_query($query, [$patient_id]);
 			           	while($row = mysqli_fetch_assoc($res)){

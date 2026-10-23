@@ -26,8 +26,8 @@ else {
 		[$diagnosis, $treatment, $by, $today, $booking_id]
 	);
 }
-
 if ($res) {
-	alert_redirect('Saved Successfully', '../appointments/');
+	audit('notes_saved', ['booking_id' => $booking_id, 'details' => 'diagnosis/treatment']);
+	flash_redirect('Saved Successfully', '../appointments/', 'success');
 }
-alert_redirect('An error while saving. Please contact system admin', '../appointments/');
+flash_redirect('An error while saving. Please contact system admin', '../appointments/');

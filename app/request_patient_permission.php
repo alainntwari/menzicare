@@ -31,6 +31,7 @@ if (!$fow || !$doctor) {
 $code = otp_generate();
 // The code is tied to this patient: it cannot be used to open anyone else's history
 $_SESSION['access_otp'] = otp_record($code, ['patient' => $patient]);
+audit('patient_access_requested', ['patient_id' => $patient]);
 AioNem_Net_API_SMS_Send_Net('+250' . $fow['phone_number'], 'Doctor ' . $doctor['name'] . ' wants to view your medical history. Use code ' . $code . " to grant access");
 
 echo e('Code sent to the patient\'s phone. It is valid for ' . (OTP_TTL / 60) . ' minutes.');
