@@ -1,0 +1,12 @@
+# Real DB credentials - copy includes/connection.sample.php to includes/connection.php and fill in your own
+includes/connection.php
+
+# Archives / backups
+menzicare.zip
+
+# PHP error logs
+error_log
+
+# OS junk
+.DS_Store
+Thumbs.db

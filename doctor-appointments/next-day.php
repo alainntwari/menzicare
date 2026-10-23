@@ -1,0 +1,61 @@
+<?php
+include '../includes/config.php';
+$d = $_GET['day'];
+$div_id = $_GET['div'];
+$ds_id = $_GET['ds_id'];
+ 
+$prevclick = 'prev_day_'.$div_id.'()';
+?> 
+
+<div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo $prevclick; ?>">
+	<h6><b><</b></h6>
+	<font>Prev</font>
+	<hr style="margin-top: 0px">
+</div>
+	<?php
+	
+  $d = strtotime("-1 day", $d);
+	$a = 0;
+	while($a<5){
+	  $a++;
+	  ?>
+	  <div class="col-sm-2 col-xs-2" style="text-align: center;">
+	    <?php
+	    $d=strtotime("+1 day", $d);
+	    $day = date("D", $d);
+	    $day_date = date("j M", $d);
+	    ?>
+	    <h6><b><?php echo $day; ?></b></h6>
+	    <font><?php echo $day_date; ?></font>
+	    <hr style="margin-top: 0px">
+	  </div>
+	  <?php
+	    $que = "SELECT * FROM users_doctors_specialities_names_and_location_concatinations where ds_id = {$ds_id}";
+	    $res = mysqli_query($con,$que);
+	    $row=mysqli_fetch_assoc($res);
+        if($row['ds_status'] == 'ACTIVE'){
+            $a = 1;
+            while($a<5){
+                $a++;
+                ?> 
+                <div class="col-sm-2 col-xs-2" style="text-align: center;">
+                    <?php include '../doctor-appointments/booking_button.php'; ?>
+                </div>
+                <?php
+              }
+
+              $onclick = 'next_day_'.$div_id.'()';
+          }
+      }
+
+      ?> 
+ 
+<div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo $onclick; ?>">
+      <input id="<?php echo 'day'.$div_id; ?>" type="text" value="<?php echo $d; ?>" style="display: none;">
+      <input id="<?php echo 'div'.$div_id; ?>" type="text" value="<?php echo $div_id; ?>" style="display: none;">
+      <input id="<?php echo 'ds_id'.$div_id; ?>" type="text" value="<?php echo $row['ds_id']; ?>" style="display: none;">
+      <h6><b>></b></h6>
+      <font>Next</font>
+      <hr style="margin-top: 0px">
+    </div> 
+</div> 
