@@ -1,13 +1,13 @@
 <?php
 include "../includes/config.php";
 
-$test = strtoupper($con->real_escape_string($_GET['test'] ?? ''));
-$location = strtoupper($con->real_escape_string($_GET['location'] ?? ''));
+$test = strtoupper((string)($_GET['test'] ?? ''));
+$location = strtoupper((string)($_GET['location'] ?? ''));
 ?>
 <div class="row">
 <?php
-$que = "SELECT * FROM test_institution_location_concatination_new where test_id = '{$test}' and upper(plc_concatination) like '%{$location}%'";
-$res = mysqli_query($con,$que);
+$que = "SELECT * FROM test_institution_location_concatination_new where test_id = ? and upper(plc_concatination) like ?";
+$res = db_query($que, [$test, '%'.$location.'%']);
 while($row=mysqli_fetch_assoc($res)){
 	?>
 

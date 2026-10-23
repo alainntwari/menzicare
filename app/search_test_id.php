@@ -1,7 +1,7 @@
 <?php
 include "../includes/config.php";
 
-$test = strtoupper($con->real_escape_string($_GET['test'] ?? ''));
+$test = strtoupper((string)($_GET['test'] ?? ''));
 
 ?>
 <div class="">
@@ -36,15 +36,15 @@ $test = strtoupper($con->real_escape_string($_GET['test'] ?? ''));
                       <div class="col-md-5 col-sm-6 ">
                         <select required="required" id="search-test" class="form-control" onchange="search_test()">
                           <?php
-                           $query = "SELECT * FROM tests where test_status = 'ACTIVE' and test_id = '{$test}'";
-                          $re = mysqli_query($con,$query);
+                           $query = "SELECT * FROM tests where test_status = 'ACTIVE' and test_id = ?";
+                          $re = db_query($query, [$test]);
                           while($rop=mysqli_fetch_assoc($re)){
                             ?>
                             <option value="<?php echo e($rop['test_id']); ?>"><?php echo e($rop['test_name']); ?></option>
                             <?php
                           }
-                          $query = "SELECT * FROM tests where test_status = 'ACTIVE' and test_id <> '{$test}'";
-                          $re = mysqli_query($con,$query);
+                          $query = "SELECT * FROM tests where test_status = 'ACTIVE' and test_id <> ?";
+                          $re = db_query($query, [$test]);
                           while($rop=mysqli_fetch_assoc($re)){
                             ?>
                             <option value="<?php echo e($rop['test_id']); ?>"><?php echo e($rop['test_name']); ?></option>
@@ -73,8 +73,8 @@ $test = strtoupper($con->real_escape_string($_GET['test'] ?? ''));
             <div id="content-id">
               <div class="row">
               <?php
-              $que = "SELECT * FROM test_institution_location_concatination_new where test_id = '{$test}'";
-              $res = mysqli_query($con,$que);
+              $que = "SELECT * FROM test_institution_location_concatination_new where test_id = ?";
+              $res = db_query($que, [$test]);
               while($row=mysqli_fetch_assoc($res)){
               	?> 
               	

@@ -19,7 +19,7 @@ require_role(ROLE_SUPER_ADMIN);
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" onclick="heathcare_institutions_list()">List of Providers</a>
+                <a class="dropdown-item" onclick="healthcare_institutions_list()">List of Providers</a>
               </div>
           </li>
           <li><a class="close-link"><i class="fa fa-close"></i></a>
@@ -61,7 +61,7 @@ require_role(ROLE_SUPER_ADMIN);
 								<option value="">Select Province</option>
 								<?php
 									$bery = "SELECT * FROM provinces";
-									$ger = mysqli_query($con,$bery);
+									$ger = db_query($bery);
 									while($gow = mysqli_fetch_assoc($ger)){
 										?>
 								<option value="<?php echo e($gow['province_id']); ?>"><?php echo e($gow['province_name']); ?></option>

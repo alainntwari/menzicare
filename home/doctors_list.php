@@ -42,21 +42,21 @@
                       <?php
                         $div_id = 0;
                         $que = "SELECT * FROM users_doctors_specialities_names where ds_status = 'ACTIVE'";
-                        $res = mysqli_query($con,$que);
+                        $res = db_query($que);
                         while($row=mysqli_fetch_assoc($res)){
                           $div_id++;
 
                           
 
-                          $kery1 = "SELECT * from providers_location where pl_ref_provider = {$row['ref_healthcare_providers']}";
-                          $f1 = mysqli_query($con,$kery1);
+                          $kery1 = "SELECT * from providers_location where pl_ref_provider = ?";
+                          $f1 = db_query($kery1, [$row['ref_healthcare_providers']]);
                           $b1 = mysqli_fetch_assoc($f1);
                           $location = e($b1['pl_province'].', '.$b1['pl_district'].', '.$b1['pl_sector']).'<br>'.e($b1['pl_street']);
                           $map=$b1['map'];
 
 
-                          $kery = "SELECT * from healthcare_institutions where hi_id = {$row['ref_healthcare_providers']}";
-                          $f = mysqli_query($con,$kery);
+                          $kery = "SELECT * from healthcare_institutions where hi_id = ?";
+                          $f = db_query($kery, [$row['ref_healthcare_providers']]);
                           $b = mysqli_fetch_assoc($f);
                           $provider = $b['hi_institute'];
 

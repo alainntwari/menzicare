@@ -4,8 +4,8 @@
 $service_availability = $service_availability;
 
 
-$que = "SELECT * FROM vaccine_institution_location_concatination_new where vi_id = {$service_availability}";
-$res = mysqli_query($con,$que);
+$que = "SELECT * FROM vaccine_institution_location_concatination_new where vi_id = ?";
+$res = db_query($que, [$service_availability]);
 $row = mysqli_fetch_assoc($res);
 $service = $row['vaccine_name'];
 $hospital = $row['hi_institute'];

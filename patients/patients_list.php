@@ -56,21 +56,25 @@
             require "../includes/user_role.php";
 
             if($_SESSION['role'] == 3){
-              $quer = "SELECT * FROM bookings_view where ref_healthcare_providers = '{$user_institution}' and b_status in ('PAYMENT PENDING','APPROVED') order by b_id desc";  
+              $quer = "SELECT * FROM bookings_view where ref_healthcare_providers = ? and b_status in ('PAYMENT PENDING','APPROVED') order by b_id desc";
+              $quer_params = [$user_institution];
             }
             elseif($_SESSION['role'] == 2){
-              $quer = "SELECT * FROM bookings_view where user_id = '{$_SESSION['id']}' and b_status in ('PAYMENT PENDING','APPROVED') order by b_id desc";  
+              $quer = "SELECT * FROM bookings_view where user_id = ? and b_status in ('PAYMENT PENDING','APPROVED') order by b_id desc";
+              $quer_params = [$_SESSION['id']];
             }
             elseif($_SESSION['role'] == 1){
-              $quer = "SELECT * FROM bookings_view and b_status in ('PAYMENT PENDING','APPROVED') order by b_id desc";  
+              $quer = "SELECT * FROM bookings_view where b_status in ('PAYMENT PENDING','APPROVED') order by b_id desc";
+              $quer_params = [];
             }
             elseif($_SESSION['role'] == 4){
-              $quer = "SELECT * FROM bookings_view where b_ref_user = {$_SESSION['id']} and b_status in ('PAYMENT PENDING','APPROVED') order by b_id desc";  
+              $quer = "SELECT * FROM bookings_view where b_ref_user = ? and b_status in ('PAYMENT PENDING','APPROVED') order by b_id desc";
+              $quer_params = [$_SESSION['id']];
             }
-            $rep = mysqli_query($con,$quer);
+            $rep = db_query($quer, $quer_params);
             while($row=mysqli_fetch_assoc($rep)){
-              $qu = "SELECT * FROM users where user_id = '{$row['b_ref_user']}'";
-              $rfa = mysqli_query($con,$qu);
+              $qu = "SELECT * FROM users where user_id = ?";
+              $rfa = db_query($qu, [$row['b_ref_user']]);
               $voro = mysqli_fetch_assoc($rfa);
               $user_name = $voro['name'];              
               ?>

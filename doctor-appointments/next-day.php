@@ -30,8 +30,8 @@ $prevclick = 'prev_day_'.$div_id.'()';
 	    <hr style="margin-top: 0px">
 	  </div>
 	  <?php
-	    $que = "SELECT * FROM users_doctors_specialities_names_and_location_concatinations where ds_id = {$ds_id}";
-	    $res = mysqli_query($con,$que);
+	    $que = "SELECT * FROM users_doctors_specialities_names_and_location_concatinations where ds_id = ?";
+	    $res = db_query($que, [$ds_id]);
 	    $row=mysqli_fetch_assoc($res);
         if($row['ds_status'] == 'ACTIVE'){
             $a = 1;

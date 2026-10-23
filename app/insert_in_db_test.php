@@ -28,7 +28,7 @@ require_login();
 
 		// here we will call the Alan's function
 
-		AioNem_Net_API_SMS_Send_Net("+250".$user_number, $date." is your appointment date for ". $item_name. " at ".$hospital_name.". Appointement code number is ".$code);
+		AioNem_Net_API_SMS_Send_Net("+250".$user_number, $date." is your appointment date for ". $item_name. " at ".$hospital_name.". Appointment code number is ".$code);
 
 		alert_redirect('Saved Successfully', '../medical-tests/');
 	} 

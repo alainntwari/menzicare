@@ -107,7 +107,7 @@
 
     <script>
         
-        function heathcare_institutions_list() 
+        function healthcare_institutions_list() 
         {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET","../health-care-institutions/list_2.php",false);
@@ -116,7 +116,7 @@
 
         }
 
-        function create_new_heathcare_institution() 
+        function create_new_healthcare_institution() 
         {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET","../health-care-institutions/create_new.php",false);
@@ -3816,7 +3816,7 @@ $("#d50").click(function(){
         {
             var id = intValue;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST","../app/request_patient_persmission.php",false);
+            xmlhttp.open("POST","../app/request_patient_permission.php",false);
             xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
             xmlhttp.send("id="+encodeURIComponent(id)+"&csrf_token="+encodeURIComponent(document.querySelector('meta[name="csrf-token"]').content));
             document.getElementById("otp_area").innerHTML=xmlhttp.responseText; 

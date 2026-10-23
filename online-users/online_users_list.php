@@ -49,14 +49,14 @@
           <tbody>
             <?php
             $quer = "SELECT * FROM users where role <> 4";
-            $res = mysqli_query($con,$quer);
+            $res = db_query($quer);
             while($row=mysqli_fetch_assoc($res)){
             	$user = $row['name'];
             	$joined_date = $row['joined_date'];
             	$status = $row['status'];
 
-            	$hu1 = "SELECT * FROM roles where role_id = {$row['role']}";
-        		$g1= mysqli_query($con,$hu1);
+            	$hu1 = "SELECT * FROM roles where role_id = ?";
+        		$g1= db_query($hu1, [$row['role']]);
         		$bh1 = mysqli_fetch_assoc($g1);
         		$role = $bh1['role_name'];
 
@@ -65,8 +65,8 @@
 
             	}
             	else{
-            		$hu = "SELECT * FROM healthcare_institutions where hi_id = {$row['ref_healthcare_providers']}";
-            		$g = mysqli_query($con,$hu);
+            		$hu = "SELECT * FROM healthcare_institutions where hi_id = ?";
+            		$g = db_query($hu, [$row['ref_healthcare_providers']]);
             		$bh = mysqli_fetch_assoc($g);
             		$institution = $bh['hi_institute'];
             	}

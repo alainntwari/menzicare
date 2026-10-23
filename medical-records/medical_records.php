@@ -35,18 +35,18 @@
 			           		<th>Patient History</th>
 			           		<th>Physical Examination</th>
 			           		<th>Investigation</th>
-			           		<th>Diagonisis</th>
+			           		<th>Diagnosis</th>
 			           		<th>Treatment</th>
 			           	</tr>
 			           </thead>
 			           <tbody>
 			           	<?php 
 			           	$patient_id = (int)$_SESSION['id'];
-			           	$query = "SELECT * FROM medical_records where user_id = '{$patient_id}' order by dn_id desc";
-			           	$res = mysqli_query($con,$query);
+			           	$query = "SELECT * FROM medical_records where user_id = ? order by dn_id desc";
+			           	$res = db_query($query, [$patient_id]);
 			           	while($row = mysqli_fetch_assoc($res)){
-			           		$query2 = "SELECT * FROM doctors_institutions where user_id = '{$row['dn_updated_by']}'";
-			           		$res2 = mysqli_query($con,$query2);
+			           		$query2 = "SELECT * FROM doctors_institutions where user_id = ?";
+			           		$res2 = db_query($query2, [$row['dn_updated_by']]);
 			           		$row2 = mysqli_fetch_assoc($res2);
 			           		$doctor = $row2['name'];
 			           		$hospital = $row2['hi_institute']

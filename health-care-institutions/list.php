@@ -9,14 +9,14 @@
   <div class="col-md-12 col-sm-12 ">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Health Care Institutions<small>Registered partner healcare institutions</small></h2>
+        <h2>Health Care Institutions<small>Registered partner healthcare institutions</small></h2>
         <ul class="nav navbar-right panel_toolbox">
           <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" onclick="create_new_heathcare_institution()">Create New</a>
+                <a class="dropdown-item" onclick="create_new_healthcare_institution()">Create New</a>
               </div>
           </li>
           <li><a class="close-link"><i class="fa fa-close"></i></a>
@@ -49,7 +49,7 @@
           <tbody>
             <?php
             $quer = "SELECT * FROM institutions_location_view";
-            $res = mysqli_query($con,$quer);
+            $res = db_query($quer);
             while($row=mysqli_fetch_assoc($res)){
               
               ?>

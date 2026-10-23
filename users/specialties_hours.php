@@ -25,8 +25,8 @@ if (!can_manage_service($ds_id)) {
       </thead>
       <tbody>
         <?php 
-        $cer = "SELECT * FROM users_doctors_specialities_names_availability where ds_id = '{$ds_id}' and da_status = 'ACTIVE'";
-        $br = mysqli_query($con,$cer);
+        $cer = "SELECT * FROM users_doctors_specialities_names_availability where ds_id = ? and da_status = 'ACTIVE'";
+        $br = db_query($cer, [$ds_id]);
         while($xow = mysqli_fetch_assoc($br)){
           ?>
           <tr>
@@ -65,7 +65,7 @@ if (!can_manage_service($ds_id)) {
 			</div>
 		</div>
 		<div class="item form-group">
-			<label class="col-form-label col-md-3 col-sm-3 label-align" for="start_time">Start TIme<span class="required">*</span>
+			<label class="col-form-label col-md-3 col-sm-3 label-align" for="start_time">Start Time<span class="required">*</span>
 			</label>
 			<div class="col-md-6 col-sm-6 ">
 				<input type="time" name="start_time" id="start_time" class="form-control">
@@ -76,7 +76,7 @@ if (!can_manage_service($ds_id)) {
 	
 		
 		<div class="item form-group">
-			<label class="col-form-label col-md-3 col-sm-3 label-align" for="end_time">End TIme<span class="required">*</span>
+			<label class="col-form-label col-md-3 col-sm-3 label-align" for="end_time">End Time<span class="required">*</span>
 			</label>
 			<div class="col-md-6 col-sm-6 ">
 				

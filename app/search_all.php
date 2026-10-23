@@ -1,8 +1,8 @@
 <?php
 include "../includes/config.php";
 
-$item = strtoupper($con->real_escape_string($_GET['item'] ?? ''));
-$location = strtoupper($con->real_escape_string($_GET['location'] ?? ''));
+$item = strtoupper((string)($_GET['item'] ?? ''));
+$location = strtoupper((string)($_GET['location'] ?? ''));
 
 	// aha bivuze ko ari ug searchinga bakoresheje doctor name cg speciality cg hospital name gusa + examin na test
 
@@ -11,28 +11,28 @@ $location = strtoupper($con->real_escape_string($_GET['location'] ?? ''));
                         $availability = '<i class="fa fa-map-marker"></i>';
                         //$que = "SELECT * FROM users_doctors_specialities_names_and_location where upper(name) like '%{$item}%' or upper(sp_name) like '%{$item}%'";
 
-                        $que = "SELECT * FROM users_doctors_specialities_names_and_location_concatinations where upper(name) like '%{$item}%' or upper(sp_name) like '%{$item}%' and upper(plc_concatination) like '%{$location}%'";
-                        $res = mysqli_query($con,$que);
+                        $que = "SELECT * FROM users_doctors_specialities_names_and_location_concatinations where (upper(name) like ? or upper(sp_name) like ?) and upper(plc_concatination) like ?";
+                        $res = db_query($que, ['%'.$item.'%', '%'.$item.'%', '%'.$location.'%']);
                         while($row=mysqli_fetch_assoc($res)){
                         	if($row['ds_status'] == 'ACTIVE'){
 
                           $div_id++;
 
-                          $kery11 = "SELECT da_day from doctors_availability where da_ref_ds_id = {$row['ds_id']} group by da_day";
-                          $f11 = mysqli_query($con,$kery11);
+                          $kery11 = "SELECT da_day from doctors_availability where da_ref_ds_id = ? group by da_day";
+                          $f11 = db_query($kery11, [$row['ds_id']]);
                           while($b11 = mysqli_fetch_assoc($f11)){
                             $availability = $availability.', '.e($b11['da_day']);
                           }
 
-                          $kery1 = "SELECT * from providers_location where pl_ref_provider = {$row['ref_healthcare_providers']}";
-                          $f1 = mysqli_query($con,$kery1);
+                          $kery1 = "SELECT * from providers_location where pl_ref_provider = ?";
+                          $f1 = db_query($kery1, [$row['ref_healthcare_providers']]);
                           $b1 = mysqli_fetch_assoc($f1);
                           $location = e($b1['pl_province'].', '.$b1['pl_district'].', '.$b1['pl_sector']).'<br>'.e($b1['pl_street']);
                           $map=$b1['map'];
 
 
-                          $kery = "SELECT * from healthcare_institutions where hi_id = {$row['ref_healthcare_providers']}";
-                          $f = mysqli_query($con,$kery);
+                          $kery = "SELECT * from healthcare_institutions where hi_id = ?";
+                          $f = db_query($kery, [$row['ref_healthcare_providers']]);
                           $b = mysqli_fetch_assoc($f);
                           $provider = $b['hi_institute'];
 

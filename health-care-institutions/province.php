@@ -8,8 +8,8 @@ require_role(ROLE_SUPER_ADMIN);
 $province = (int)($_GET["province"] ?? 0);
 if($province > 0)
 {
-	$query = "SELECT * FROM districts where parent_id = $province";
-	$res = mysqli_query($con,$query);
+	$query = "SELECT * FROM districts where parent_id = ?";
+	$res = db_query($query, [$province]);
 	echo '<select id="districtdd" class="form-control" required="required" name="district" onChange="change_district()">
 	<option value="">District</option>';
 	while($row=mysqli_fetch_assoc($res)){

@@ -41,6 +41,6 @@ unset($pending);
 unset($_SESSION['pending_registration']);
 
 if ($res) {
-	alert_redirect('You account has been Successfully created. Your login code is ' . $code . '. Please login with this code and your password', '../login/');
+	alert_redirect('Your account has been Successfully created. Your login code is ' . $code . '. Please login with this code and your password', '../login/');
 }
 alert_redirect('Error while creating your account. Please try again or contact the system admin', '../login/');

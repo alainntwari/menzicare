@@ -63,26 +63,30 @@
             require "../includes/user_role.php";
 
             if($_SESSION['role'] == 3){
-              $quer = "SELECT * FROM bookings_view where ref_healthcare_providers = '{$user_institution}' order by b_id desc";  
+              $quer = "SELECT * FROM bookings_view where ref_healthcare_providers = ? order by b_id desc";
+              $quer_params = [$user_institution];
             }
             elseif($_SESSION['role'] == 2){
-              $quer = "SELECT * FROM bookings_view where user_id = '{$_SESSION['id']}' order by b_id desc";  
+              $quer = "SELECT * FROM bookings_view where user_id = ? order by b_id desc";
+              $quer_params = [$_SESSION['id']];
             }
             elseif($_SESSION['role'] == 1){
-              $quer = "SELECT * FROM bookings_view order by b_id desc";  
+              $quer = "SELECT * FROM bookings_view order by b_id desc";
+              $quer_params = [];
             }
             elseif($_SESSION['role'] == 4){
-              $quer = "SELECT * FROM bookings_view where b_ref_user = {$_SESSION['id']} order by b_id desc";  
+              $quer = "SELECT * FROM bookings_view where b_ref_user = ? order by b_id desc";
+              $quer_params = [$_SESSION['id']];
             }
-            $rep = mysqli_query($con,$quer);
+            $rep = db_query($quer, $quer_params);
             while($row=mysqli_fetch_assoc($rep)){
-              $qu = "SELECT * FROM users where user_id = '{$row['b_ref_user']}'";
-              $rfa = mysqli_query($con,$qu);
+              $qu = "SELECT * FROM users where user_id = ?";
+              $rfa = db_query($qu, [$row['b_ref_user']]);
               $voro = mysqli_fetch_assoc($rfa);
               $user_name = $voro['name'];   
 
-              $qu1 = "SELECT * FROM healthcare_institutions where hi_id = '{$row['ref_healthcare_providers']}'";
-              $rfa1 = mysqli_query($con,$qu1);
+              $qu1 = "SELECT * FROM healthcare_institutions where hi_id = ?";
+              $rfa1 = db_query($qu1, [$row['ref_healthcare_providers']]);
               $voro1 = mysqli_fetch_assoc($rfa1);
               $hospital = $voro1['hi_institute'];              
               ?>
@@ -111,15 +115,15 @@
                     $patient_history='';
                     $physical_examination='';
                     $investigation='';
-                    $diagonisis='';
+                    $diagnosis='';
                     $treatment='';
-                    $fer = "SELECT * FROM doctors_narrations where dn_ref_b_id = '{$row['b_id']}'";
-                    $ges = mysqli_query($con,$fer);
+                    $fer = "SELECT * FROM doctors_narrations where dn_ref_b_id = ?";
+                    $ges = db_query($fer, [$row['b_id']]);
                     while($bow=mysqli_fetch_assoc($ges)){
                       $patient_history=menzi_decrypt($bow['dn_patient_history']);
                       $physical_examination=menzi_decrypt($bow['dn_physical_examination']);
                       $investigation=menzi_decrypt($bow['dn_investigation']);
-                      $diagonisis=menzi_decrypt($bow['dn_diagonisis']);
+                      $diagnosis=menzi_decrypt($bow['dn_diagonisis']);
                       $treatment=menzi_decrypt($bow['dn_treatment']);
                     }
                     ?>
@@ -202,10 +206,10 @@
 
                                 <input type="text" value="<?php echo e($row['b_id']); ?>" name="booking_id" style="display: none;" readonly="readonly">
                                 <div class="item form-group">
-                                  <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Diagonisis<span class="required">*</span>
+                                  <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Diagnosis<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-sm-8 ">
-                                    <textarea id="diagonisis" cols="50" rows="5" name="diagonisis" required="required" class="form-control" placeholder="Enter Diagonisis here"><?php echo e($diagonisis); ?></textarea>
+                                    <textarea id="diagnosis" cols="50" rows="5" name="diagnosis" required="required" class="form-control" placeholder="Enter Diagnosis here"><?php echo e($diagnosis); ?></textarea>
                                   </div>
                                 </div>
 

@@ -4,8 +4,8 @@
 $service_availability = $service_availability;
 
 
-$que = "SELECT * FROM test_institution_location_concatination_new where ti_id = {$service_availability}";
-$res = mysqli_query($con,$que);
+$que = "SELECT * FROM test_institution_location_concatination_new where ti_id = ?";
+$res = db_query($que, [$service_availability]);
 $row = mysqli_fetch_assoc($res);
 $service = $row['test_name'];
 $hospital = $row['hi_institute'];
