@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <?php
 $service_availability = $service_availability;
 
@@ -25,7 +26,7 @@ $name = $row['name'];
     <div class="title_left">
       <h3>Book Appointment With
         <?php
-        echo $name;
+        echo e($name);
         ?>
       </h3>
     </div>
@@ -57,18 +58,19 @@ $name = $row['name'];
 								<div class="x_content">
 									<br />
 									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/booking-doctor.php">
+<?php echo csrf_field(); ?>
 
 										<div class="item form-group">
 											<label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Appointment <span class="required">*</span>
 											</label>
 											<div class="col-md-6 col-sm-6 ">
 												<select class="form-control" required="required" name="service_availability">
-													<option value="<?php echo $service_availability; ?>"><?php echo $date.' '.$time; ?></option>
+													<option value="<?php echo e($service_availability); ?>"><?php echo e($date.' '.$time); ?></option>
 													<option>Change</option>
 												</select>
-												<input type="text" name="time" value="<?php echo $time; ?>" style="display: none;" readonly="readonly">
+												<input type="text" name="time" value="<?php echo e($time); ?>" style="display: none;" readonly="readonly">
 
-												<input type="text" name="date" value="<?php echo $date; ?>" style="display: none;" readonly="readonly">
+												<input type="text" name="date" value="<?php echo e($date); ?>" style="display: none;" readonly="readonly">
 											</div>
 										</div>
 										
@@ -92,7 +94,7 @@ $name = $row['name'];
   <div class="col-md-6 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2><i class="fa fa-bars"></i> <?php echo $name; ?> <small>Profile</small></h2>
+                    <h2><i class="fa fa-bars"></i> <?php echo e($name); ?> <small>Profile</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -141,8 +143,8 @@ $name = $row['name'];
                                 while($xow5 = mysqli_fetch_assoc($br5)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow5['e_certificate']; ?></td>
-                                    <td><button class="btn btn-outline-danger" onclick="delete_education(<?php echo $xow5['e_id']; ?>)"><b>X</b></button></td>
+                                    <td><?php echo e($xow5['e_certificate']); ?></td>
+                                    <td><button class="btn btn-outline-danger" onclick="delete_education(<?php echo e($xow5['e_id']); ?>)"><b>X</b></button></td>
                                   </tr>
                                   <?php
                                 }
@@ -172,7 +174,7 @@ $name = $row['name'];
                                 while($xow3 = mysqli_fetch_assoc($br3)){
                                   ?>
                                   <tr>
-                                    <td><a href="<?php echo $xow3['sml_link']; ?>" target="_blanck"><?php echo $xow3['sml_link_type']; ?></a></td>
+                                    <td><a href="<?php echo e_url($xow3['sml_link']); ?>" target="_blanck"><?php echo e($xow3['sml_link_type']); ?></a></td>
                                   </tr>
                                   <?php
                                 }
@@ -205,7 +207,7 @@ $name = $row['name'];
                                 while($xow2 = mysqli_fetch_assoc($br2)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow2['p_payment']; ?></td>
+                                    <td><?php echo e($xow2['p_payment']); ?></td>
                                   </tr>
                                   <?php
                                 }
@@ -237,7 +239,7 @@ $name = $row['name'];
                                 while($xow1 = mysqli_fetch_assoc($br1)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow1['i_insurance']; ?></td>
+                                    <td><?php echo e($xow1['i_insurance']); ?></td>
                                   </tr>
                                   <?php
                                 }
@@ -269,7 +271,7 @@ $name = $row['name'];
                                 while($xow4 = mysqli_fetch_assoc($br4)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow4['price_amount'].' '.$xow4['price_currency']; ?></td>
+                                    <td><?php echo e($xow4['price_amount'].' '.$xow4['price_currency']); ?></td>
                                   </tr>
                                   <?php
                                 }
@@ -301,7 +303,7 @@ $name = $row['name'];
                                 while($xow = mysqli_fetch_assoc($br)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow['sp_name']; ?></td>
+                                    <td><?php echo e($xow['sp_name']); ?></td>
                                   </tr>
                                   <?php
                                 }
@@ -321,7 +323,7 @@ $name = $row['name'];
                           </div>
                           <div class="col-md-5">
                             <br><br><br>
-                            Names: <?php echo $name; ?><br>
+                            Names: <?php echo e($name); ?><br>
                             Role : Doctor<br>
                             Phone Number:<br>
                             Email : 
@@ -334,7 +336,7 @@ $name = $row['name'];
                           
                           <div class="col-md-4">
                             <br>
-                            Province: <?php echo $name; ?><br>
+                            Province: <?php echo e($name); ?><br>
                             District : Doctor<br>
                             Sector:<br>
                             Cell : <br>

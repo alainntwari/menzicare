@@ -1,32 +1,33 @@
 <?php
+defined('MENZICARE_APP') || exit;
 
 
     function AioNem_Net_API_SMS_Send_Net($to, $body) {
         
-        $uid = "schoolbox";
-        $key = "schoolbox";
-        $from = "Menzicare";
+        $uid = AIONEM_UID;
+        $key = AIONEM_KEY;
+        $from = AIONEM_SMS_FROM;
         
         return AioNem_Net_API_SMS_Send($uid, $key, $from, $to, $body);
     }
 
     function AioNem_Net_API_Chat_Send_Net($to, $body) {
         
-        $uid = "schoolbox";
-        $key = "schoolbox";
-        $from = "Menzicare";
+        $uid = AIONEM_UID;
+        $key = AIONEM_KEY;
+        $from = AIONEM_SMS_FROM;
         
         return AioNem_Net_Chat_Send($uid, $key, $from, $to, $body);
     }
 
     function AioNem_Net_API_Mail_Send_Net($to, $subject, $body) {
         
-        $uid = "schoolbox";
-        $key = "schoolbox";
-        $email = "info@school.rw";
-        $password = "SchoolBox";
-        $from = "SchoolBox";
-        $reply = "info@school.rw";
+        $uid = AIONEM_UID;
+        $key = AIONEM_KEY;
+        $email = AIONEM_MAIL_EMAIL;
+        $password = AIONEM_MAIL_PASSWORD;
+        $from = AIONEM_MAIL_FROM;
+        $reply = AIONEM_MAIL_REPLY;
         
         return AioNem_Net_Mail_Send($uid, $key, $email, $password, $from, $to, $subject, $body, $reply);
     }
@@ -45,7 +46,8 @@
         $request = curl_init("https://api.aionem.net/sms/index.php");
         curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($request, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($request, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($request, CURLOPT_MAXREDIRS, 3);
         curl_setopt($request, CURLOPT_POSTREDIR, 3);
@@ -67,7 +69,8 @@
         $request = curl_init("https://api.aionem.net/sms/index.php");
         curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($request, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($request, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($request, CURLOPT_MAXREDIRS, 3);
         curl_setopt($request, CURLOPT_POSTREDIR, 3);
@@ -92,7 +95,8 @@
         $request = curl_init("https://api.aionem.net/chat/index.php");
         curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($request, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($request, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($request, CURLOPT_MAXREDIRS, 3);
         curl_setopt($request, CURLOPT_POSTREDIR, 3);
@@ -122,7 +126,8 @@
         $request = curl_init("https://api.aionem.net/mail/index.php");
         curl_setopt($request, CURLOPT_POST, true);
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($request, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($request, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($request, CURLOPT_MAXREDIRS, 3);
         curl_setopt($request, CURLOPT_POSTREDIR, 3);

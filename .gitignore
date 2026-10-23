@@ -10,3 +10,6 @@ error_log
 # OS junk
 .DS_Store
 Thumbs.db
+
+# App secrets (API keys, encryption key) - copy includes/secrets.sample.php
+includes/secrets.php

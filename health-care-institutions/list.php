@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
   <div class="page-title">
     <div class="title_left">
       <h3>Health Care Institutions</h3>
@@ -54,13 +55,13 @@
               ?>
 
               <tr>
-                <td><?php echo $row['hi_institute']; ?></td>
-                <td><?php echo $row['pl_province']; ?></td>
-                <td><?php echo $row['pl_district']; ?></td>
-                <td><?php echo $row['pl_sector']; ?></td>
-                <td><?php echo $row['pl_cell']; ?></td>
-                <td><?php echo $row['pl_village']; ?></td>
-                <td><button class="btn btn-success" onclick="view_institution_details(<?php echo $row['hi_id']; ?>)">View</button></td>
+                <td><?php echo e($row['hi_institute']); ?></td>
+                <td><?php echo e($row['pl_province']); ?></td>
+                <td><?php echo e($row['pl_district']); ?></td>
+                <td><?php echo e($row['pl_sector']); ?></td>
+                <td><?php echo e($row['pl_cell']); ?></td>
+                <td><?php echo e($row['pl_village']); ?></td>
+                <td><button class="btn btn-success" onclick="view_institution_details(<?php echo e($row['hi_id']); ?>)">View</button></td>
               </tr>
               <?php
             }

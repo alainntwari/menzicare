@@ -1,5 +1,6 @@
 <?php
 include "../includes/config.php";
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
 ?>
 <div class="page-title">
 <div class="title_left">
@@ -29,6 +30,7 @@ include "../includes/config.php";
 			<div class="x_content">
 				<br />
 				<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/new-healthcare_user.php">
+<?php echo csrf_field(); ?>
 
 					<div class="item form-group">
 						<label class="col-form-label col-md-3 col-sm-3 label-align" for="name">User Full Names <span class="required">*</span>
@@ -59,7 +61,7 @@ include "../includes/config.php";
 								$fer = mysqli_query($con,$dery);
 								while($drow=mysqli_fetch_assoc($fer)){
 									?>
-									<option value="<?php echo $drow['hi_id']; ?>"><?php echo $drow['hi_institute']; ?></option>
+									<option value="<?php echo e($drow['hi_id']); ?>"><?php echo e($drow['hi_institute']); ?></option>
 									<?php
 								}
 								?>
@@ -80,7 +82,7 @@ include "../includes/config.php";
 					              $rf = mysqli_query($con,$q);
 					              $vor = mysqli_fetch_assoc($rf);
 								?>
-									<option value="<?php echo $vor['ref_healthcare_providers']; ?>">1</option>
+									<option value="<?php echo e($vor['ref_healthcare_providers']); ?>">1</option>
 									
 								</select>
 							</div>

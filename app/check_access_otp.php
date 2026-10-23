@@ -1,27 +1,30 @@
 <?php
 include '../includes/config.php';
-$patient = $_POST['patient'];
-$code = $_POST['code'];
-if(isset($_SESSION['access_code'])){
-	
-	if($_SESSION['access_code'] == $code){
-		//Here okk
-		unset($_SESSION['code']);
-		$_SESSION['patient'] = $patient;
-		echo "<script>alert('You have been granted access to view the medical history of the patient. Click ok to proceed');window.location='../patients/history.php';</script>";
-		exit();
+require_role(ROLE_DOCTOR, ROLE_ADMIN);
 
-	}
-	else{
-		// Wrong access code. enter correct code\
-		echo "<script>alert('Wrong access code. Please review the code with the patient and try again');window.location='../appointments/';</script>";
-		exit();
-	}
+$patient = (int)($_POST['patient'] ?? 0);
+$code = $_POST['code'] ?? '';
+
+if (empty($_SESSION['access_otp'])) {
+	alert_redirect('Wrong access code. Please request access code first', '../appointments/');
 }
-else{
-   // here please request access code first
-		echo "<script>alert('Wrong access code. Please request access code first');window.location='../appointments/';</script>";
-		exit();
+
+$otp = &$_SESSION['access_otp'];
+// A code only unlocks the patient it was sent to
+if ((int)$otp['patient'] !== $patient) {
+	alert_redirect('This access code was not requested for this patient. Please request a new code', '../appointments/');
 }
-exit();
-?>
+
+$check = otp_check($otp, $code);
+if ($check === 'ok') {
+	unset($otp);
+	unset($_SESSION['access_otp']);
+	$_SESSION['patient'] = $patient;
+	alert_redirect('You have been granted access to view the medical history of the patient. Click ok to proceed', '../patients/history.php');
+}
+if ($check === 'wrong') {
+	alert_redirect('Wrong access code. Please review the code with the patient and try again', '../appointments/');
+}
+unset($otp);
+unset($_SESSION['access_otp']);
+alert_redirect('This access code has expired or too many wrong codes were entered. Please request a new code', '../appointments/');

@@ -1,4 +1,4 @@
-
+<?php defined('MENZICARE_APP') || exit; ?>
 <div class="row">
 <?php
 $que = "SELECT * FROM tests where test_status = 'ACTIVE'";
@@ -7,11 +7,11 @@ while($row=mysqli_fetch_assoc($res)){
 	?> 
 	
      <div class="animated flipInY col-md-3 col-sm-12">
-        <a href="#" onclick="search_test_id(<?php echo $row['test_id']; ?>)">
+        <a href="#" onclick="search_test_id(<?php echo e($row['test_id']); ?>)">
           <div class="tile-stats" style="background: #2a3f54; color: #fdffe8;  padding-top:20px" width="100%">
             <div class="icon" style="width: 10px;"><i class="fa fa-caret-square-o-right"></i></div>
             
-            <h3 style="text-align: left; max-width: 78%; font-size: 20px;"><?php echo $row['test_name']; ?></h3>
+            <h3 style="text-align: left; max-width: 78%; font-size: 20px;"><?php echo e($row['test_name']); ?></h3>
             <br>
             <p style="text-align: left; max-width: 78%; font-size: 12px;">
              	Click to View providers</p>

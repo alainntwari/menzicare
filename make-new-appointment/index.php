@@ -1,10 +1,10 @@
 <?php
 include "../includes/config.php";
 
-$type = $con->real_escape_string($_GET['aty']);
-$service_availability = $con->real_escape_string($_GET['dahd']);
-$time = $con->real_escape_string($_GET['cbh']);
-$date = $con->real_escape_string($_GET['ddf']);
+$type = (int)($_GET['aty'] ?? 0);
+$service_availability = (int)($_GET['dahd'] ?? 0);
+$time = (string)($_GET['cbh'] ?? '');
+$date = (string)($_GET['ddf'] ?? '');
 
 if($type == 1){
 	$active_page = 'doctor-appointments';

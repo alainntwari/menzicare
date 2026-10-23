@@ -1,28 +1,21 @@
 <?php
 include "../includes/config.php";
-$user = $con->real_escape_string($_POST['user']);
-$specialty = $con->real_escape_string($_POST['specialty']);
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
+$user = (int)($_POST['user'] ?? 0);
+$specialty = (int)($_POST['specialty'] ?? 0);
 
-$der = "SELECT count(*) from doctors_specialities where ds_ref_user = '{$user}' and ds_ref_sp_id = '{$specialty}'";
-$ver = mysqli_query($con,$der);
-$cow = mysqli_fetch_assoc($ver);
+if (!can_manage_user($user)) {
+	deny_access();
+}
 
-if($cow['count(*)'] == 0){
- 	$wery = "INSERT INTO doctors_specialities (ds_ref_user,ds_ref_sp_id) VALUES ('{$user}','{$specialty}')";
- 	$res = mysqli_query($con,$wery);
+$cow = db_row("SELECT count(*) AS total from doctors_specialities where ds_ref_user = ? and ds_ref_sp_id = ?", [$user, $specialty]);
+
+if($cow['total'] == 0){
+ 	$res = db_query("INSERT INTO doctors_specialities (ds_ref_user,ds_ref_sp_id) VALUES (?,?)", [$user, $specialty]);
  	if($res){
- 		echo "<script>alert('Successfully saved');window.location='../users/';</script>";
-			exit();
+ 		alert_redirect('Successfully saved', '../users/');
  	}
- 	else{
- 		echo "<script>alert('Failed to isnert into database');window.location='../users/';</script>";
-			exit();
- 	}
+ 	alert_redirect('Failed to isnert into database', '../users/');
 }
-else{
-	// arleady exists
-	echo "<script>alert('user arleady exists');window.location='../users/';</script>";
-			exit();
-}
-exit();
-?>
+// arleady exists
+alert_redirect('user arleady exists', '../users/');

@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <div class="col-md-7 col-sm-12">
     <?php
     $hospital_name = $hospital;
@@ -20,11 +21,11 @@
     $cow2 = mysqli_fetch_assoc($bo2);
     $map = $cow2['map'];
     $contact = '+250'.$cow2['pl_phone'];
-    $address = $cow2['pl_street'].' , '.$cow2['pl_sector'].' <br>'.$cow2['pl_district'].', '.$cow2['pl_province'];
+    $address = e($cow2['pl_street'].' , '.$cow2['pl_sector']).' <br>'.e($cow2['pl_district'].', '.$cow2['pl_province']);
     ?>
     <div class="x_panel">
       <div class="x_title">
-        <h2><i class="fa fa-bars"></i> <?php echo $hospital_name; ?> <small></small></h2>
+        <h2><i class="fa fa-bars"></i> <?php echo e($hospital_name); ?> <small></small></h2>
         <ul class="nav navbar-right panel_toolbox">
           <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
           </li>
@@ -50,11 +51,11 @@
           <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
              <div class="col-md-6 col-sm-12" style="background: #f7f7f7;">
                <h3>Payments</h3>
-                <span style="font-size: 16px;"><?php echo $payment; ?></span>
+                <span style="font-size: 16px;"><?php echo nl2br(e($payment)); ?></span>
               </div>
              <div class="col-md-6 col-sm-12" style="background: #f7f7f7;">
                <h3>Prices</h3>
-                <span style="font-size: 16px;"><?php echo $prices; ?></span>
+                <span style="font-size: 16px;"><?php echo nl2br(e($prices)); ?></span>
               </div>
               
           </div>
@@ -64,7 +65,7 @@
 
               <div class="col-md-12 col-sm-12" style="background: #f7f7f7;">
                 <h3>Schedule</h3>
-                <span style="font-size: 16px;"><?php echo $schedule; ?></span>
+                <span style="font-size: 16px;"><?php echo nl2br(e($schedule)); ?></span>
               </div>
              
             </div>
@@ -101,7 +102,7 @@
                     <div class="row" style="background: #f7f7f7;">
                      <div class="col-md-12 col-sm-12">
                         <hr>
-                        <h4><?php echo $gow['sp_name']; ?></h4>
+                        <h4><?php echo e($gow['sp_name']); ?></h4>
                         
                      </div>
                     
@@ -110,10 +111,10 @@
                      <div class="col-md-6">
                          <div class="profile clearfix">
                         <div class="profile_pic">
-                          <img src="<?php echo $image; ?>" alt="..." class="img-circle profile_img">
+                          <img src="<?php echo e($image); ?>" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                          <span><?php echo $gow['name']; ?></span>
+                          <span><?php echo e($gow['name']); ?></span>
                         </div>
                       </div>
                      </div>
@@ -125,10 +126,10 @@
                     <div class="col-md-6">
                          <div class="profile clearfix">
                         <div class="profile_pic">
-                          <img src="<?php echo $image; ?>" alt="..." class="img-circle profile_img">
+                          <img src="<?php echo e($image); ?>" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                          <span><?php echo $gow['name']; ?></span>
+                          <span><?php echo e($gow['name']); ?></span>
                         </div>
                       </div>
                      </div>
@@ -151,7 +152,7 @@
 
               <div class="col-md-12 col-sm-12" style="background: #f7f7f7;">
               <h3>Insurances</h3>
-                <span style="font-size: 16px;"><?php echo $insurances; ?></span>
+                <span style="font-size: 16px;"><?php echo nl2br(e($insurances)); ?></span>
               </div>
             </div>
             
@@ -162,12 +163,12 @@
               <h3>Location & Access Information</h3>
               </div>
               <div class="col-md-6" style="background: #f7f7f7;">
-                  <br><br><b>Address</b> <br><?php echo $address;?><br><br>
-                  <b>Contact Number</b> <br><?php echo $contact;?><br><br>
-                  <b>Website</b> <br> <a href="<?php echo $website;?>" target="_blank">Visit Website</a>
+                  <br><br><b>Address</b> <br><?php echo $address; ?><br><br>
+                  <b>Contact Number</b> <br><?php echo e($contact); ?><br><br>
+                  <b>Website</b> <br> <a href="<?php echo e_url($website); ?>" target="_blank">Visit Website</a>
               </div>
               <div class="col-md-6" style="background: #f7f7f7;">
-                   <iframe style="border: 0;" src="<?php echo $map;?>"></iframe>
+                   <iframe style="border: 0;" src="<?php echo e_url($map); ?>"></iframe>
               </div>
 
             </div>
@@ -176,7 +177,7 @@
             <div class="row">
               <div class="col-md-12 col-sm-12" style="background: #f7f7f7;">
               <h3>Hospital Presentation</h3>
-                <span style="font-size: 16px;"><?php echo $presentation; ?></span>
+                <span style="font-size: 16px;"><?php echo nl2br(e($presentation)); ?></span>
               </div>
             </div>
           </div>

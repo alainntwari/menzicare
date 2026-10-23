@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <footer>
           <div class="pull-right">
             System by <a href="#">Adrienne</a>

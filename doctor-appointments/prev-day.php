@@ -1,15 +1,15 @@
 <?php
 include '../includes/config.php';
-$d = $_GET['day'];
-$div_id = $_GET['div'];
-$ds_id = $_GET['ds_id'];
+$d = (int)($_GET['day'] ?? 0);
+$div_id = (int)($_GET['div'] ?? 0);
+$ds_id = (int)($_GET['ds_id'] ?? 0);
 
 //echo $ds_id;
 //exit();
 $prevclick = 'prev_day_'.$div_id.'()';
 ?> 
 
-<div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo $prevclick; ?>">
+<div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo e($prevclick); ?>">
   <h6><b><</b></h6>
   <font>Prev</font>
   <hr style="margin-top: 0px">
@@ -27,8 +27,8 @@ $prevclick = 'prev_day_'.$div_id.'()';
       $day = date("D", $d);
       $day_date = date("j M", $d);
       ?>
-      <h6><b><?php echo $day; ?></b></h6>
-      <font><?php echo $day_date; ?></font>
+      <h6><b><?php echo e($day); ?></b></h6>
+      <font><?php echo e($day_date); ?></font>
       <hr style="margin-top: 0px">
     </div>
     <?php
@@ -52,10 +52,10 @@ $prevclick = 'prev_day_'.$div_id.'()';
 
       ?> 
  
-<div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo $onclick; ?>">
-      <input id="<?php echo 'day'.$div_id; ?>" type="text" value="<?php echo $d; ?>" style="display: none;">
-      <input id="<?php echo 'div'.$div_id; ?>" type="text" value="<?php echo $div_id; ?>" style="display: none;">
-      <input id="<?php echo 'ds_id'.$div_id; ?>" type="text" value="<?php echo $row['ds_id']; ?>" style="display: none;">
+<div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo e($onclick); ?>">
+      <input id="<?php echo e('day'.$div_id); ?>" type="text" value="<?php echo e($d); ?>" style="display: none;">
+      <input id="<?php echo e('div'.$div_id); ?>" type="text" value="<?php echo e($div_id); ?>" style="display: none;">
+      <input id="<?php echo e('ds_id'.$div_id); ?>" type="text" value="<?php echo e($row['ds_id']); ?>" style="display: none;">
       <h6><b>></b></h6>
       <font>Next</font>
       <hr style="margin-top: 0px">

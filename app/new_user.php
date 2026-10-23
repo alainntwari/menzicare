@@ -1,32 +1,46 @@
 <?php
 require '../includes/config.php';
 
-$name = $con->real_escape_string($_POST['name']);
-$phone = $con->real_escape_string($_POST['phone']);
-$email = $con->real_escape_string($_POST['email']);
-$role = 4;
-$password = $con->real_escape_string($_POST['password']);
-$_SESSION['confirmation'];
+// Step 2 of signup: check the SMS code, then create the patient account
+// from the details saved in the session by app/register.php.
+if (empty($_SESSION['pending_registration'])) {
+	alert_redirect('Please fill in the registration form first', '../login/#signup');
+}
 
+$pending = &$_SESSION['pending_registration'];
+$check = otp_check($pending, $_POST['code'] ?? '');
+if ($check === 'expired' || $check === 'locked') {
+	unset($_SESSION['pending_registration']);
+	alert_redirect('Your verification code has expired or too many wrong codes were entered. Please register again', '../login/#signup');
+}
+if ($check === 'wrong') {
+	alert_redirect('Wrong verification code. Please check the SMS and try again', 'register.php');
+}
 
+$ro = db_row("SELECT count(*) AS total FROM users WHERE phone_number = ?", [$pending['phone']]);
+if ($ro && $ro['total'] > 0) {
+	unset($_SESSION['pending_registration']);
+	alert_redirect('User already exists, please login into your account', '../login/');
+}
+
+$role = ROLE_PATIENT;
 $today_date = date('d-M-Y');
+$code = $role . random_int(10000, 99999);
 
-$code = rand(10000,99999);
-$code = $role.''.$code;
-
-
-// here we are going to insert
-$query = "INSERT INTO users (name,ref_healthcare_providers,role,joined_date,email,phone_number,code,password) values ('{$name}','0','{$role}','{$today_date}','{$email}','{$phone}','{$code}','{$password}')";
-$res = mysqli_query($con,$query);
-if($res){
-	echo "<script>alert('You account has been Successfully created. Please login with your phone number and password');window.location='../login/';</script>";
-	exit();
-}
-else{
-	echo $name.'<br>';
-	//echo "<script>alert('Error while inserting in Database');window.location='../users/';</script>";
-	exit();
+// Hashes need users.password VARCHAR(255) - see database/migrations/001_security.sql
+if (!password_column_ready()) {
+	error_log('MenziCare: run database/migrations/001_security.sql (users.password too short for hashes)');
+	alert_redirect('Accounts cannot be created right now. Please contact the system admin', '../login/');
 }
 
-exit();
- ?>
+$res = db_query(
+	"INSERT INTO users (name,ref_healthcare_providers,role,joined_date,email,phone_number,code,password) VALUES (?,?,?,?,?,?,?,?)",
+	[$pending['name'], '0', $role, $today_date, $pending['email'], $pending['phone'], $code, $pending['password_hash']]
+);
+unset($pending);
+unset($_SESSION['pending_registration']);
+
+if ($res) {
+	alert_redirect('You account has been Successfully created. Your login code is ' . $code . '. Please login with this code and your password', '../login/');
+}
+alert_redirect('Error while creating your account. Please try again or contact the system admin', '../login/');

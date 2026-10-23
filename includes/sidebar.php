@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <?php
 if(isset($_SESSION['id'])){
 $dw = "SELECT * FROM users where user_id = {$_SESSION['id']}";
@@ -54,11 +55,11 @@ else{
       ?>
       <div class="profile clearfix">
         <div class="profile_pic">
-          <img src="<?php echo $image; ?>" alt="..." class="img-circle profile_img">
+          <img src="<?php echo e($image); ?>" alt="..." class="img-circle profile_img">
         </div>
         <div class="profile_info">
           <span>Welcome,</span>
-          <h2><?php echo $ro.', '.$user_name; ?></h2>
+          <h2><?php echo e($ro.', '.$user_name); ?></h2>
         </div>
       </div>
       <?php
@@ -86,7 +87,7 @@ else{
         </div>
         <div class="menu_section">
 
-          <h3><?php echo $menu_title; ?></h3>
+          <h3><?php echo e($menu_title); ?></h3>
           <ul class="nav side-menu">
 
             <?php
@@ -99,7 +100,7 @@ else{
                 $class = '';
               }
               ?>
-            <li class="<?php echo $class; ?>"><a href="../appointments"><i class="fa fa-clock"></i> Appointments</a></li>
+            <li class="<?php echo e($class); ?>"><a href="../appointments"><i class="fa fa-clock"></i> Appointments</a></li>
             <?php
             if($active_page == 'patients'){
                 $class = 'active';
@@ -108,7 +109,7 @@ else{
                 $class = '';
               }
               ?>
-            <li class="<?php echo $class; ?>"><a href="../patients"><i class="fa fa-users"></i> My Patients</a></li>
+            <li class="<?php echo e($class); ?>"><a href="../patients"><i class="fa fa-users"></i> My Patients</a></li>
               <?php
             }
             if($vow['role']==3){
@@ -119,7 +120,7 @@ else{
                 $class = '';
               }
               ?>
-            <li class="<?php echo $class; ?>"><a href="../appointments"><i class="fa fa-users"></i> Appointments</a></li>
+            <li class="<?php echo e($class); ?>"><a href="../appointments"><i class="fa fa-users"></i> Appointments</a></li>
             <?php
             if($active_page == 'users'){
                 $class = 'active';
@@ -128,7 +129,7 @@ else{
                 $class = '';
               }
               ?>
-              <li class="<?php echo $class; ?>"><a href="../users/"><i class="fa fa-user"></i>User Management</a></li>
+              <li class="<?php echo e($class); ?>"><a href="../users/"><i class="fa fa-user"></i>User Management</a></li>
               
               <?php
             }
@@ -142,7 +143,7 @@ else{
                     $class = '';
                   }
                   ?>
-                  <li class="<?php echo $class; ?>"><a href="../home/"><i class="fa fa-home"></i> Home</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../home/"><i class="fa fa-home"></i> Home</a></li>
                   <?php
                   if($active_page == 'doctor-appointments'){
                     $class = 'active';
@@ -151,7 +152,7 @@ else{
                     $class = '';
                   }
                   ?>
-                  <li class="<?php echo $class; ?>"><a href="../doctor-appointments/"><i class="fa fa-home"></i> Doctor Appointments</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../doctor-appointments/"><i class="fa fa-home"></i> Doctor Appointments</a></li>
                   <?php
                   if($active_page == 'medical-tests'){
                     $class = 'active';
@@ -160,7 +161,7 @@ else{
                     $class = '';
                   }
                   ?>
-                  <li class="<?php echo $class; ?>"><a href="../medical-tests/"><i class="fa fa-home"></i> Medical Tests</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../medical-tests/"><i class="fa fa-home"></i> Medical Tests</a></li>
                   <?php
                   if($active_page == 'vaccinations'){
                     $class = 'active';
@@ -169,7 +170,7 @@ else{
                     $class = '';
                   }
                   ?>
-                  <li class="<?php echo $class; ?>"><a href="../vaccinations/"><i class="fa fa-home"></i> Vaccinations</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../vaccinations/"><i class="fa fa-home"></i> Vaccinations</a></li>
 
                    <?php
                   if($active_page == 'medical-records'){
@@ -180,7 +181,7 @@ else{
                   }
                   ?>
 
-                  <li class="<?php echo $class; ?>"><a href="../medical-records/"><i class="fa fa-home"></i> Medical Records</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../medical-records/"><i class="fa fa-home"></i> Medical Records</a></li>
             
             <?php
             }
@@ -192,7 +193,7 @@ else{
                 $class = '';
               }
             ?>
-            <li class="<?php echo $class; ?>"><a href="../health-care-institutions/"><i class="fa fa-user"></i> Health Care Institutions</a></li>
+            <li class="<?php echo e($class); ?>"><a href="../health-care-institutions/"><i class="fa fa-user"></i> Health Care Institutions</a></li>
             <?php
               if($active_page == 'users'){
                 $class = 'active';
@@ -201,7 +202,7 @@ else{
                 $class = '';
               }
               ?>
-              <li class="<?php echo $class; ?>"><a href="../users/"><i class="fa fa-user"></i>Healthcare Users</a></li>
+              <li class="<?php echo e($class); ?>"><a href="../users/"><i class="fa fa-user"></i>Healthcare Users</a></li>
               <?php
               if($active_page == 'online-users'){
                 $class = 'active';
@@ -210,7 +211,7 @@ else{
                 $class = '';
               }
               ?>
-              <li class="<?php echo $class; ?>"><a href="../online-users/"><i class="fa fa-user"></i>Registered Patients</a></li>
+              <li class="<?php echo e($class); ?>"><a href="../online-users/"><i class="fa fa-user"></i>Registered Patients</a></li>
               <?php
             }
           }
@@ -224,7 +225,7 @@ else{
                     $class = '';
                   }
                   ?>
-                  <li class="<?php echo $class; ?>"><a href="../home/"><i class="fa fa-home"></i> Home</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../home/"><i class="fa fa-home"></i> Home</a></li>
                   <?php
                   if($active_page == 'doctor-appointments'){
                     $class = 'active';
@@ -233,7 +234,7 @@ else{
                     $class = '';
                   }
                   ?>
-                  <li class="<?php echo $class; ?>"><a href="../doctor-appointments/"><i class="fa fa-home"></i> Doctor Appointments</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../doctor-appointments/"><i class="fa fa-home"></i> Doctor Appointments</a></li>
                   <?php
                   if($active_page == 'medical-tests'){
                     $class = 'active';
@@ -242,7 +243,7 @@ else{
                     $class = '';
                   }
                   ?>
-                  <li class="<?php echo $class; ?>"><a href="../medical-tests/"><i class="fa fa-home"></i> Medical Tests</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../medical-tests/"><i class="fa fa-home"></i> Medical Tests</a></li>
                   <?php
                   if($active_page == 'vaccinations'){
                     $class = 'active';
@@ -251,7 +252,7 @@ else{
                     $class = '';
                   }
                   ?>
-                  <li class="<?php echo $class; ?>"><a href="../vaccinations/"><i class="fa fa-home"></i> Vaccinations</a></li>
+                  <li class="<?php echo e($class); ?>"><a href="../vaccinations/"><i class="fa fa-home"></i> Vaccinations</a></li>
 
             <?php
           }

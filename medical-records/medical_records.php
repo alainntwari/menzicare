@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
   <?php
    if($_SESSION['role'] == 4){
    	$patient_id = $_SESSION['id'];
@@ -40,6 +41,7 @@
 			           </thead>
 			           <tbody>
 			           	<?php 
+			           	$patient_id = (int)$_SESSION['id'];
 			           	$query = "SELECT * FROM medical_records where user_id = '{$patient_id}' order by dn_id desc";
 			           	$res = mysqli_query($con,$query);
 			           	while($row = mysqli_fetch_assoc($res)){
@@ -50,12 +52,12 @@
 			           		$hospital = $row2['hi_institute']
 			           	 ?>
 			           	 <tr>
-			           		<td>Doctor:<b><?php echo $doctor; ?></b> <br> Hospital: <b><?php echo $hospital; ?></b><br> Date: <?php echo $row['dn_updated_date']; ?></td>
-			           		<td><?php echo $row['dn_patient_history']; ?></td>
-			           		<td><?php echo $row['dn_physical_examination']; ?></td>
-			           		<td><?php echo $row['dn_investigation']; ?></td>
-			           		<td><?php echo $row['dn_diagonisis']; ?></td>
-			           		<td><?php echo $row['dn_treatment']; ?></td>
+			           		<td>Doctor:<b><?php echo e($doctor); ?></b> <br> Hospital: <b><?php echo e($hospital); ?></b><br> Date: <?php echo e($row['dn_updated_date']); ?></td>
+			           		<td><?php echo nl2br(e(menzi_decrypt($row['dn_patient_history']))); ?></td>
+			           		<td><?php echo nl2br(e(menzi_decrypt($row['dn_physical_examination']))); ?></td>
+			           		<td><?php echo nl2br(e(menzi_decrypt($row['dn_investigation']))); ?></td>
+			           		<td><?php echo nl2br(e(menzi_decrypt($row['dn_diagonisis']))); ?></td>
+			           		<td><?php echo nl2br(e(menzi_decrypt($row['dn_treatment']))); ?></td>
 			           	</tr>
 			           	 <?php
 			           	}

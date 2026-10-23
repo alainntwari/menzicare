@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <div class="row">
                 <div class="x_panel">
                   <div class="x_title">
@@ -49,13 +50,13 @@
                           $kery11 = "SELECT da_day from doctors_availability where da_ref_ds_id = {$row['ds_id']} group by da_day";
                           $f11 = mysqli_query($con,$kery11);
                           while($b11 = mysqli_fetch_assoc($f11)){
-                            $availability = $availability.', '.$b11['da_day'];
+                            $availability = $availability.', '.e($b11['da_day']);
                           }
 
                           $kery1 = "SELECT * from providers_location where pl_ref_provider = {$row['ref_healthcare_providers']}";
                           $f1 = mysqli_query($con,$kery1);
                           $b1 = mysqli_fetch_assoc($f1);
-                          $location = $b1['pl_province'].', '.$b1['pl_district'].', '.$b1['pl_sector'].'<br>'.$b1['pl_street'];
+                          $location = e($b1['pl_province'].', '.$b1['pl_district'].', '.$b1['pl_sector']).'<br>'.e($b1['pl_street']);
 
 
                           $kery = "SELECT * from healthcare_institutions where hi_id = {$row['ref_healthcare_providers']}";
@@ -80,18 +81,18 @@
                             <div class="col-md-4 col-sm-4  profile_details">
                               <div class="well profile_view">
                                 <div class="col-sm-12">
-                                  <h4 class="brief"><b><?php echo $row['sp_name']; ?></b></h4>
+                                  <h4 class="brief"><b><?php echo e($row['sp_name']); ?></b></h4>
                                   <div class="left col-md-7 col-sm-7">
-                                    <h2><?php echo $row['name']; ?></h2>
-                                    <p><?php echo $provider; ?></p>
+                                    <h2><?php echo e($row['name']); ?></h2>
+                                    <p><?php echo e($provider); ?></p>
                                     <br>
                                     <ul class="list-unstyled">
-                                      <li><i class="fa fa-phone"></i> <?php echo $row['phone_number']; ?></li>
+                                      <li><i class="fa fa-phone"></i> <?php echo e($row['phone_number']); ?></li>
                                       <li><i class="fa fa-map-marker"></i> <?php echo $location; ?> </li>
                                     </ul>
                                   </div>
                                   <div class="right col-md-5 col-sm-5 text-center">
-                                    <img src="../assets/images/<?php echo $image; ?>" width="80%" alt="" class="img-circle img-fluid">
+                                    <img src="../assets/images/<?php echo e($image); ?>" width="80%" alt="" class="img-circle img-fluid">
                                   </div>
                                 </div>
                                 <div class=" profile-bottom text-center">
@@ -112,19 +113,19 @@
                                     
                                     </p>-->
                                   </div>
-                                  <div class="col-sm-6 emphasis"><a href="<?php echo '#a'.$div_id; ?>">
-                                    <button type="button" class="btn btn-primary btn-sm" id="<?php echo 'd'.$div_id; ?>">
+                                  <div class="col-sm-6 emphasis"><a href="<?php echo e('#a'.$div_id); ?>">
+                                    <button type="button" class="btn btn-primary btn-sm" id="<?php echo e('d'.$div_id); ?>">
                                       <i class="fa fa-eye"> </i> More Details
                                     </button></a>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div id="<?php echo 'a'.$div_id; ?>" style="display: none;">
+                            <div id="<?php echo e('a'.$div_id); ?>" style="display: none;">
                             <div class="col-md-12 col-sm-12 x_panel">
                               
                                 <div class="x_title">
-                                  <h2><?php echo $row['name']; ?><small>Avalability, Map location, Appointment scheduling</small></h2>
+                                  <h2><?php echo e($row['name']); ?><small>Avalability, Map location, Appointment scheduling</small></h2>
                                   <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -149,15 +150,15 @@
                                        <div class="x_content">
                                         <div class="row">
                                          <div class="col-sm-3" style="padding-top: 8px;">
-                                          <img src="../assets/images/<?php echo $image; ?>" alt="" class="img-circle img-fluid">
+                                          <img src="../assets/images/<?php echo e($image); ?>" alt="" class="img-circle img-fluid">
                                         </div>
                                         <div class="col-sm-9"> 
-                                          <h2><?php echo $row['name']; ?></h2>
-                                          <p><?php echo $provider; ?></p>
+                                          <h2><?php echo e($row['name']); ?></h2>
+                                          <p><?php echo e($provider); ?></p>
                                         </div>
                                       </div>
                                           <ul class="list-unstyled">
-                                            <li><i class="fa fa-phone"></i> <?php echo $row['phone_number']; ?></li>
+                                            <li><i class="fa fa-phone"></i> <?php echo e($row['phone_number']); ?></li>
                                             <li><i class="fa fa-map-marker"></i> <?php echo $location; ?> </li>
                                           </ul>
                                         </div>

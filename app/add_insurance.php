@@ -1,14 +1,16 @@
 <?php
 include "../includes/config.php";
-$service = $_POST['service'];
-$type = $_POST['type'];
-$insurance = $_POST['insurance'];
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
+$service = (int)($_POST['service'] ?? 0);
+$type = $_POST['type'] ?? '';
+$insurance = $_POST['insurance'] ?? '';
 
-$qui = "INSERT into insurances (i_insurance,i_type,i_ref_service) values ('{$insurance}','{$type}','{$service}')";
-$res = mysqli_query($con,$qui);
-if($res){
-	echo "<script>alert('added');window.location='../users/';</script>";
-			exit();
+if (!can_manage_service($service)) {
+	deny_access();
 }
-exit();
-?>
+
+$res = db_query("INSERT into insurances (i_insurance,i_type,i_ref_service) values (?,?,?)", [$insurance, $type, $service]);
+if($res){
+	alert_redirect('added', '../users/');
+}
+alert_redirect('Error, please contact super admin', '../users/');

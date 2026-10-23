@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -7,6 +8,7 @@
 	  <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
     <title>MENZICARE </title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

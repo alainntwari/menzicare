@@ -1,5 +1,6 @@
 <?php
 include "../includes/config.php";
+require_role(ROLE_PATIENT);
 
 $active_page = 'medical-records';
 ?>

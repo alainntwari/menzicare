@@ -1,29 +1,23 @@
 <?php
 include "../includes/config.php";
-$service = $_POST['price_service'];
-$type = $_POST['price_type'];
-$price = $_POST['price'];
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
+$service = (int)($_POST['price_service'] ?? 0);
+$type = $_POST['price_type'] ?? '';
+$price = $_POST['price'] ?? '';
 
-$sql = "SELECT count(*) from prices where price_service_type = '{$type}' and price_ref_service = '{$service}'";
-$re = mysqli_query($con,$sql);
-$vop = mysqli_fetch_assoc($re);
-if($vop['count(*)'] > 0){	
-    $qui = "UPDATE prices set price_amount = '{$price}' where price_service_type = '{$type}' and price_ref_service = '{$service}'";
+if (!can_manage_service($service)) {
+	deny_access();
+}
+
+$vop = db_row("SELECT count(*) AS total from prices where price_service_type = ? and price_ref_service = ?", [$type, $service]);
+if($vop['total'] > 0){	
+	$res = db_query("UPDATE prices set price_amount = ? where price_service_type = ? and price_ref_service = ?", [$price, $type, $service]);
 }
 else{
-	$qui = "INSERT into prices (price_amount,price_service_type,price_ref_service) values ('{$price}','{$type}','{$service}')";
+	$res = db_query("INSERT into prices (price_amount,price_service_type,price_ref_service) values (?,?,?)", [$price, $type, $service]);
 }
 
-
-$res = mysqli_query($con,$qui);
 if($res){
-	echo "<script>alert('Updated');window.location='../users/';</script>";
-			exit();
+	alert_redirect('Updated', '../users/');
 }
-else{
-	echo "<script>alert('Error, please contact super admin');window.location='../users/';</script>";
-	exit();
-	
-}
-exit();
-?>
+alert_redirect('Error, please contact super admin', '../users/');

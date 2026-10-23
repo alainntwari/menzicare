@@ -4,8 +4,9 @@
 <div class="col-md-6 col-sm-6 ">
 	<?php
 require '../includes/config.php';
-$district = $_GET["district"];
-if($district !="")
+require_role(ROLE_SUPER_ADMIN);
+$district = (int)($_GET["district"] ?? 0);
+if($district > 0)
 {
 	$query = "SELECT * FROM sectors where parent_id = $district";
 	$res = mysqli_query($con,$query);
@@ -13,7 +14,7 @@ if($district !="")
 	<option value="">Sector</option>';
 	while($row=mysqli_fetch_assoc($res)){
 		
-		echo " <option value='{$row['sector_id']}'>{$row['sector_name']}</option>";
+		echo " <option value='" . e($row['sector_id']) . "'>" . e($row['sector_name']) . "</option>";
 	}
 	echo"</select>";
 }

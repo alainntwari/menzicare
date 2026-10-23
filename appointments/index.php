@@ -1,5 +1,6 @@
 <?php
 include "../includes/config.php";
+require_login();
 
 $active_page = 'appointments';
 ?>

@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <?php
 if(isset($_SESSION['id'])){
 $sery = "SELECT * FROM users where user_id = {$_SESSION['id']}";
@@ -29,7 +30,7 @@ else{
                 <?php if(isset($_SESSION['id'])){ ?>
                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                   <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                    <img src="<?php echo $image; ?>" alt=""><?php echo $fullname; ?>
+                    <img src="<?php echo e($image); ?>" alt=""><?php echo e($fullname); ?>
                   </a>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item"  href="javascript:;"> Profile</a>
@@ -52,7 +53,7 @@ else{
                           <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                             <i class="fa fa-envelope-o"></i>
                             
-                            <span class="badge bg-green"><?php echo $row['count(*)']; ?></span>
+                            <span class="badge bg-green"><?php echo e($row['count(*)']); ?></span>
                           </a>
                           <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
 
@@ -67,7 +68,7 @@ else{
                                   
                                   <span>
                                     <span>Submitted Bookings</span>
-                                    <span class="time"><?php echo $rosa['count(*)']; ?></span>
+                                    <span class="time"><?php echo e($rosa['count(*)']); ?></span>
                                   </span>
                                   <span class="message">
                                     Patients who submitted their booking application waiting for approval
@@ -89,7 +90,7 @@ else{
                                   
                                   <span>
                                     <span>Submitted Bookings</span>
-                                    <span class="time"><?php echo $rosas['count(*)']; ?></span>
+                                    <span class="time"><?php echo e($rosas['count(*)']); ?></span>
                                   </span>
                                   <span class="message">
                                     Patients whose booking application is pending for Payment
@@ -111,7 +112,7 @@ else{
                                   
                                   <span>
                                     <span>Submitted Bookings</span>
-                                    <span class="time"><?php echo $rosaa['count(*)']; ?></span>
+                                    <span class="time"><?php echo e($rosaa['count(*)']); ?></span>
                                   </span>
                                   <span class="message">
                                     Patients whose booking application have been Approved

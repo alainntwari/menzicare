@@ -1,5 +1,6 @@
 <?php
 include "../includes/config.php";
+require_role(ROLE_SUPER_ADMIN);
 $active_page = 'online-users';
 ?>
 <!DOCTYPE html>

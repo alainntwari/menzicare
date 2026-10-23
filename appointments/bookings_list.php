@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
   <div class="page-title">
     <div class="title_left">
     </div>
@@ -89,21 +90,21 @@
               <tr>
                 <?php if($_SESSION['role'] != 4) {
                 ?>
-                <td><?php echo $user_name; ?></td>
+                <td><?php echo e($user_name); ?></td>
                 <?php 
                 }
                 else{
                   ?>
-                <td><?php echo $hospital; ?></td>
+                <td><?php echo e($hospital); ?></td>
                   <?php
                 }
                 ?> 
-                <td><?php echo $row['b_requested_date']; ?> <br>at  <?php echo $row['b_requested_time']; ?></td>
+                <td><?php echo e($row['b_requested_date']); ?> <br>at  <?php echo e($row['b_requested_time']); ?></td>
                
-                <td>Doctor: <b><?php echo $row['name']; ?></b> <br>Service:<b> <?php echo $row['sp_name']; ?></b></td>
-                <td><?php echo $row['b_appointment_date']; ?> <br>at  <?php echo $row['b_appointment_time']; ?></td>
-                <td><?php echo $row['b_booking_code']; ?></td>
-                <td><?php echo $row['b_status']; ?></td>
+                <td>Doctor: <b><?php echo e($row['name']); ?></b> <br>Service:<b> <?php echo e($row['sp_name']); ?></b></td>
+                <td><?php echo e($row['b_appointment_date']); ?> <br>at  <?php echo e($row['b_appointment_time']); ?></td>
+                <td><?php echo e($row['b_booking_code']); ?></td>
+                <td><?php echo e($row['b_status']); ?></td>
                 <?php 
                 if($_SESSION['role'] == 2 || $_SESSION['role'] == 3){
                   if($row['b_status'] == 'PAYMENT PENDING' || $row['b_status'] =='APPROVED'){
@@ -115,35 +116,11 @@
                     $fer = "SELECT * FROM doctors_narrations where dn_ref_b_id = '{$row['b_id']}'";
                     $ges = mysqli_query($con,$fer);
                     while($bow=mysqli_fetch_assoc($ges)){
-                      $patient_history=$bow['dn_patient_history'];
-                      $physical_examination=$bow['dn_physical_examination'];
-                      $investigation=$bow['dn_investigation'];
-                      $diagonisis=$bow['dn_diagonisis'];
-                      $treatment=$bow['dn_treatment'];
-                      // Store the cipher method
-                      $ciphering = "AES-128-CTR";
-                        
-                      // Use OpenSSl Encryption method
-                      $iv_length = openssl_cipher_iv_length($ciphering);
-                      $options = 0;
-                        
-                      // Non-NULL Initialization Vector for decryption
-                      $decryption_iv = '1234567891011121';
-                        
-                      // Store the decryption key
-                      $decryption_key = "yann_vladimir_bajeneza";
-                        
-                      // Use openssl_decrypt() function to decrypt the data
-                      $patient_history=openssl_decrypt ($patient_history, $ciphering, 
-                              $decryption_key, $options, $decryption_iv);
-                      $physical_examination=openssl_decrypt ($physical_examination, $ciphering, 
-                              $decryption_key, $options, $decryption_iv);
-                      $investigation=openssl_decrypt ($investigation, $ciphering, 
-                              $decryption_key, $options, $decryption_iv);
-                      $diagonisis=openssl_decrypt ($diagonisis, $ciphering, 
-                              $decryption_key, $options, $decryption_iv);
-                      $treatment=openssl_decrypt ($treatment, $ciphering, 
-                              $decryption_key, $options, $decryption_iv);
+                      $patient_history=menzi_decrypt($bow['dn_patient_history']);
+                      $physical_examination=menzi_decrypt($bow['dn_physical_examination']);
+                      $investigation=menzi_decrypt($bow['dn_investigation']);
+                      $diagonisis=menzi_decrypt($bow['dn_diagonisis']);
+                      $treatment=menzi_decrypt($bow['dn_treatment']);
                     }
                     ?>
                     <td>
@@ -153,15 +130,16 @@
                                   <label class="col-form-label col-md-9 col-sm-9 label-align">Patient's medical history available in the system<span class="required">*</span>
                                   </label>
                                   <div class="col-md-3 col-sm-3 ">
-                                    <button type="submit" class="btn btn-success" onclick="request_permission_to_patient(<?php echo $row['b_ref_user']; ?>)">Request access</button>
+                                    <button type="submit" class="btn btn-success" onclick="request_permission_to_patient(<?php echo e($row['b_ref_user']); ?>)">Request access</button>
                                   </div>
                                 </div>
                                 <form action="../app/check_access_otp.php" method="POST">
+<?php echo csrf_field(); ?>
                                   <div class="item form-group">
                                   <label class="col-form-label col-md-4 col-sm-4 label-align" for="code">Access Code<span class="required">*</span>
                                   </label>
                                   <div class="col-md-6 col-sm-6 ">
-                                    <input type="text" value="<?php echo $row['b_ref_user']; ?>" name="patient" style="display: none;" readonly="readonly">
+                                    <input type="text" value="<?php echo e($row['b_ref_user']); ?>" name="patient" style="display: none;" readonly="readonly">
                                     <input type="text" name="code" class="form-control" placeholder="Enter code sent to patient's phone" required="required">
                                   </div>
                                   <div class="col-md-2 col-sm-2 ">
@@ -173,14 +151,15 @@
 
                           <h6>Narration</h6>
                             <form id="narration-form" action="../app/save_narrations.php" data-parsley-validate class="form-horizontal form-label-left" method="POST">
+<?php echo csrf_field(); ?>
 
-                                <input type="text" value="<?php echo $row['b_id']; ?>" name="booking_id" style="display: none;" readonly="readonly">
+                                <input type="text" value="<?php echo e($row['b_id']); ?>" name="booking_id" style="display: none;" readonly="readonly">
 
                                 <div class="item form-group">
                                   <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Patient History<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-sm-8 ">
-                                    <textarea id="patient_history" cols="50" rows="5" name="patient_history" required="required" class="form-control" placeholder="Enter Patient history here"><?php echo $patient_history; ?></textarea>
+                                    <textarea id="patient_history" cols="50" rows="5" name="patient_history" required="required" class="form-control" placeholder="Enter Patient history here"><?php echo e($patient_history); ?></textarea>
                                   </div>
                                 </div>
 
@@ -189,7 +168,7 @@
                                   <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Physical examination<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-sm-8 ">
-                                    <textarea id="physical_examination" cols="50" rows="5" name="physical_examination" class="form-control" placeholder="Enter Physical examination here"><?php echo $physical_examination; ?></textarea>
+                                    <textarea id="physical_examination" cols="50" rows="5" name="physical_examination" class="form-control" placeholder="Enter Physical examination here"><?php echo e($physical_examination); ?></textarea>
                                   </div>
                                 </div>
 
@@ -197,7 +176,7 @@
                                   <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Investigation<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-sm-8 ">
-                                    <textarea id="investigation" cols="50" rows="5" name="investigation" class="form-control" placeholder="Enter Investigation here"><?php echo $investigation; ?></textarea>
+                                    <textarea id="investigation" cols="50" rows="5" name="investigation" class="form-control" placeholder="Enter Investigation here"><?php echo e($investigation); ?></textarea>
                                   </div>
                                 </div>
                                
@@ -219,13 +198,14 @@
                         <div class="col-md-12">
                           <h6>Results</h6>
                             <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/save_narrations_results.php">
+<?php echo csrf_field(); ?>
 
-                                <input type="text" value="<?php echo $row['b_id']; ?>" name="booking_id" style="display: none;" readonly="readonly">
+                                <input type="text" value="<?php echo e($row['b_id']); ?>" name="booking_id" style="display: none;" readonly="readonly">
                                 <div class="item form-group">
                                   <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Diagonisis<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-sm-8 ">
-                                    <textarea id="diagonisis" cols="50" rows="5" name="diagonisis" required="required" class="form-control" placeholder="Enter Diagonisis here"><?php echo $diagonisis; ?></textarea>
+                                    <textarea id="diagonisis" cols="50" rows="5" name="diagonisis" required="required" class="form-control" placeholder="Enter Diagonisis here"><?php echo e($diagonisis); ?></textarea>
                                   </div>
                                 </div>
 
@@ -233,7 +213,7 @@
                                   <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Treatment<span class="required">*</span>
                                   </label>
                                   <div class="col-md-8 col-sm-8 ">
-                                    <textarea id="treatment" cols="50" rows="5" name="treatment" class="form-control" placeholder="Enter Treatment here"><?php echo $treatment; ?></textarea>
+                                    <textarea id="treatment" cols="50" rows="5" name="treatment" class="form-control" placeholder="Enter Treatment here"><?php echo e($treatment); ?></textarea>
                                   </div>
                                 </div>
 
@@ -265,12 +245,13 @@
                       <div class="col-md-12">
                         <h6>Approve</h6>
                           <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/approve_doctor_appointment.php">
+<?php echo csrf_field(); ?>
 
                               <div class="item form-group">
                                 <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Order number<span class="required">*</span>
                                 </label>
                                 <div class="col-md-8 col-sm-8 ">
-                                  <input type="text" name="booking_id" style="display: none;" value="<?php echo $row['b_id']; ?>" readonly>
+                                  <input type="text" name="booking_id" style="display: none;" value="<?php echo e($row['b_id']); ?>" readonly>
                                   <input type="number" id="order_number" name="order_number" required="required" class="form-control">
                                 </div>
                               </div>
@@ -295,6 +276,7 @@
                       <div class="col-md-12">
                         <h6>Request to change Date or Time</h6>
                           <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/new-healthcare_user.php">
+<?php echo csrf_field(); ?>
 
                               <div class="item form-group">
                                 <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Reason<span class="required">*</span>
@@ -339,6 +321,7 @@
                       <div class="col-md-12">
                         <h6>Reject</h6>
                           <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/new-healthcare_user.php">
+<?php echo csrf_field(); ?>
 
                               <div class="item form-group">
                                 <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Reason for rejection<span class="required">*</span>
