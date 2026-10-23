@@ -8,8 +8,8 @@ require_role(ROLE_SUPER_ADMIN);
 $cell = (int)($_GET["cell"] ?? 0);
 if($cell > 0)
 {
-	$query = "SELECT * FROM villages where parent_id = $cell";
-	$res = mysqli_query($con,$query);
+	$query = "SELECT * FROM villages where parent_id = ?";
+	$res = db_query($query, [$cell]);
 	echo '<select id="celldd" class="form-control" required="required" name="village" onChange="change_village()">
 	<option value="">Village</option>';
 	while($row=mysqli_fetch_assoc($res)){

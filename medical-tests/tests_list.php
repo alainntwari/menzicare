@@ -2,7 +2,7 @@
 <div class="row">
 <?php
 $que = "SELECT * FROM tests where test_status = 'ACTIVE'";
-$res = mysqli_query($con,$que);
+$res = db_query($que);
 while($row=mysqli_fetch_assoc($res)){
 	?> 
 	

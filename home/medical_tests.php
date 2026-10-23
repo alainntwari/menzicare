@@ -43,24 +43,24 @@
                         $div_id = 0;
                         $availability = '<i class="fa fa-map-marker"></i>';
                         $que = "SELECT * FROM users_doctors_specialities_names where ds_status = 'ACTIVE'";
-                        $res = mysqli_query($con,$que);
+                        $res = db_query($que);
                         while($row=mysqli_fetch_assoc($res)){
                           $div_id++;
 
-                          $kery11 = "SELECT da_day from doctors_availability where da_ref_ds_id = {$row['ds_id']} group by da_day";
-                          $f11 = mysqli_query($con,$kery11);
+                          $kery11 = "SELECT da_day from doctors_availability where da_ref_ds_id = ? group by da_day";
+                          $f11 = db_query($kery11, [$row['ds_id']]);
                           while($b11 = mysqli_fetch_assoc($f11)){
                             $availability = $availability.', '.e($b11['da_day']);
                           }
 
-                          $kery1 = "SELECT * from providers_location where pl_ref_provider = {$row['ref_healthcare_providers']}";
-                          $f1 = mysqli_query($con,$kery1);
+                          $kery1 = "SELECT * from providers_location where pl_ref_provider = ?";
+                          $f1 = db_query($kery1, [$row['ref_healthcare_providers']]);
                           $b1 = mysqli_fetch_assoc($f1);
                           $location = e($b1['pl_province'].', '.$b1['pl_district'].', '.$b1['pl_sector']).'<br>'.e($b1['pl_street']);
 
 
-                          $kery = "SELECT * from healthcare_institutions where hi_id = {$row['ref_healthcare_providers']}";
-                          $f = mysqli_query($con,$kery);
+                          $kery = "SELECT * from healthcare_institutions where hi_id = ?";
+                          $f = db_query($kery, [$row['ref_healthcare_providers']]);
                           $b = mysqli_fetch_assoc($f);
                           $provider = $b['hi_institute'];
 

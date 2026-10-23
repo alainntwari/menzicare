@@ -1,8 +1,8 @@
 <?php defined('MENZICARE_APP') || exit; ?>
 <?php
 if(isset($_SESSION['id'])){
-$dw = "SELECT * FROM users where user_id = {$_SESSION['id']}";
-$bg = mysqli_query($con,$dw);
+$dw = "SELECT * FROM users where user_id = ?";
+$bg = db_query($dw, [$_SESSION['id']]);
 $vow = mysqli_fetch_assoc($bg);
 $user_name = $vow['name'];
 if($vow['role']==2){

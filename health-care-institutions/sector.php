@@ -8,8 +8,8 @@ require_role(ROLE_SUPER_ADMIN);
 $sector = (int)($_GET["sector"] ?? 0);
 if($sector > 0)
 {
-	$query = "SELECT * FROM cells where parent_id = $sector";
-	$res = mysqli_query($con,$query);
+	$query = "SELECT * FROM cells where parent_id = ?";
+	$res = db_query($query, [$sector]);
 	echo '<select id="celldd" class="form-control" required="required" name="cell" onChange="change_cell()">
 	<option value="">Cell</option>';
 	while($row=mysqli_fetch_assoc($res)){

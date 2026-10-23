@@ -32,7 +32,7 @@
                           <option value="">Select Vaccination</option>
                            <?php
                           $query = "SELECT * FROM vaccines where vaccine_status = 'ACTIVE'";
-                          $re = mysqli_query($con,$query);
+                          $re = db_query($query);
                           while($rop=mysqli_fetch_assoc($re)){
                             ?>
                             <option value="<?php echo e($rop['vaccine_id']); ?>"><?php echo e($rop['vaccine_name']); ?></option>

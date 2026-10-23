@@ -66,18 +66,21 @@
             require "../includes/user_role.php";
 
             if($_SESSION['role'] == 3 || $_SESSION['role'] == 2 ){
-              $quer = "SELECT * FROM booking_vaccines_view  where vi_ref_institute = '{$user_institution}' order by bv_id desc";  
+              $quer = "SELECT * FROM booking_vaccines_view  where vi_ref_institute = ? order by bv_id desc";
+              $quer_params = [$user_institution];
             }
             elseif($_SESSION['role'] == 1){
-              $quer = "SELECT * FROM booking_vaccines_view order by bv_id desc";  
+              $quer = "SELECT * FROM booking_vaccines_view order by bv_id desc";
+              $quer_params = [];
             }
             elseif($_SESSION['role'] == 4){
-              $quer = "SELECT * FROM booking_vaccines_view where bv_ref_user = {$_SESSION['id']} order by bv_id desc";  
+              $quer = "SELECT * FROM booking_vaccines_view where bv_ref_user = ? order by bv_id desc";
+              $quer_params = [$_SESSION['id']];
             }
-            $rep = mysqli_query($con,$quer);
+            $rep = db_query($quer, $quer_params);
             while($row=mysqli_fetch_assoc($rep)){
-              $qu1 = "SELECT * FROM healthcare_institutions where hi_id = '{$row['vi_ref_institute']}'";
-              $rfa1 = mysqli_query($con,$qu1);
+              $qu1 = "SELECT * FROM healthcare_institutions where hi_id = ?";
+              $rfa1 = db_query($qu1, [$row['vi_ref_institute']]);
               $voro1 = mysqli_fetch_assoc($rfa1);
               $hospital = $voro1['hi_institute'];              
               ?>

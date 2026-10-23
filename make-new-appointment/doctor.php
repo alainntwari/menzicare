@@ -3,21 +3,21 @@
 $service_availability = $service_availability;
 
 
-$que = "SELECT * FROM doctors_availability where da_id = {$service_availability}";
-$res = mysqli_query($con,$que);
+$que = "SELECT * FROM doctors_availability where da_id = ?";
+$res = db_query($que, [$service_availability]);
 $row = mysqli_fetch_assoc($res);
 $service = $row['da_ref_ds_id'];
 
 
-$que1 = "SELECT * FROM doctors_specialities where ds_id = {$service}";
-$res1 = mysqli_query($con,$que1);
+$que1 = "SELECT * FROM doctors_specialities where ds_id = ?";
+$res1 = db_query($que1, [$service]);
 $row1 = mysqli_fetch_assoc($res1);
 $user_id = $row1['ds_ref_user'];
 
 
 $div_id = 1;
-$que = "SELECT * FROM users_doctors_specialities_names where user_id = {$user_id}";
-$res = mysqli_query($con,$que);
+$que = "SELECT * FROM users_doctors_specialities_names where user_id = ?";
+$res = db_query($que, [$user_id]);
 $row = mysqli_fetch_assoc($res);
 $name = $row['name'];
 
@@ -138,8 +138,8 @@ $name = $row['name'];
                               </thead>
                               <tbody>
                                 <?php 
-                                $cer5 = "SELECT * FROM education where e_ref_service = '{$service}' and e_type = 'DOCTOR'";
-                                $br5 = mysqli_query($con,$cer5);
+                                $cer5 = "SELECT * FROM education where e_ref_service = ? and e_type = 'DOCTOR'";
+                                $br5 = db_query($cer5, [$service]);
                                 while($xow5 = mysqli_fetch_assoc($br5)){
                                   ?>
                                   <tr>
@@ -169,12 +169,12 @@ $name = $row['name'];
                               </thead>
                               <tbody>
                                 <?php 
-                                $cer3 = "SELECT * FROM social_media_links where sml_service = '{$service}' and sml_service_type = 'DOCTOR'";
-                                $br3 = mysqli_query($con,$cer3);
+                                $cer3 = "SELECT * FROM social_media_links where sml_service = ? and sml_service_type = 'DOCTOR'";
+                                $br3 = db_query($cer3, [$service]);
                                 while($xow3 = mysqli_fetch_assoc($br3)){
                                   ?>
                                   <tr>
-                                    <td><a href="<?php echo e_url($xow3['sml_link']); ?>" target="_blanck"><?php echo e($xow3['sml_link_type']); ?></a></td>
+                                    <td><a href="<?php echo e_url($xow3['sml_link']); ?>" target="_blank" rel="noopener noreferrer"><?php echo e($xow3['sml_link_type']); ?></a></td>
                                   </tr>
                                   <?php
                                 }
@@ -202,8 +202,8 @@ $name = $row['name'];
                               </thead>
                               <tbody>
                                 <?php 
-                                $cer2 = "SELECT * FROM payments where p_ref_service = '{$service}' and p_status = 'ACTIVE' and p_type = 'DOCTOR'";
-                                $br2 = mysqli_query($con,$cer2);
+                                $cer2 = "SELECT * FROM payments where p_ref_service = ? and p_status = 'ACTIVE' and p_type = 'DOCTOR'";
+                                $br2 = db_query($cer2, [$service]);
                                 while($xow2 = mysqli_fetch_assoc($br2)){
                                   ?>
                                   <tr>
@@ -234,8 +234,8 @@ $name = $row['name'];
                               </thead>
                               <tbody>
                                 <?php 
-                                $cer1 = "SELECT * FROM insurances where i_ref_service = '{$service}' and i_status = 'ACTIVE' and i_type = 'DOCTOR'";
-                                $br1 = mysqli_query($con,$cer1);
+                                $cer1 = "SELECT * FROM insurances where i_ref_service = ? and i_status = 'ACTIVE' and i_type = 'DOCTOR'";
+                                $br1 = db_query($cer1, [$service]);
                                 while($xow1 = mysqli_fetch_assoc($br1)){
                                   ?>
                                   <tr>
@@ -266,8 +266,8 @@ $name = $row['name'];
                               </thead>
                               <tbody>
                                 <?php 
-                                $cer4 = "SELECT * FROM prices where price_ref_service = '{$service}' and price_service_type = 'DOCTOR'";
-                                $br4 = mysqli_query($con,$cer4);
+                                $cer4 = "SELECT * FROM prices where price_ref_service = ? and price_service_type = 'DOCTOR'";
+                                $br4 = db_query($cer4, [$service]);
                                 while($xow4 = mysqli_fetch_assoc($br4)){
                                   ?>
                                   <tr>
@@ -298,8 +298,8 @@ $name = $row['name'];
                               </thead>
                               <tbody>
                                 <?php 
-                                $cer = "SELECT * FROM users_doctors_specialities_names where user_id = '{$user_id}' and ds_status = 'ACTIVE'";
-                                $br = mysqli_query($con,$cer);
+                                $cer = "SELECT * FROM users_doctors_specialities_names where user_id = ? and ds_status = 'ACTIVE'";
+                                $br = db_query($cer, [$user_id]);
                                 while($xow = mysqli_fetch_assoc($br)){
                                   ?>
                                   <tr>

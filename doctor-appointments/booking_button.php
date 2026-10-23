@@ -14,8 +14,8 @@
                                                 $today_date = date('d-M-Y');
                                                 $check_day = date('l',$d);
                                                 
-                                                $quer = "SELECT * FROM doctors_availability where da_ref_ds_id = '{$row['ds_id']}' and da_day = '{$check_day}'";
-                                                $sq = mysqli_query($con,$quer);
+                                                $quer = "SELECT * FROM doctors_availability where da_ref_ds_id = ? and da_day = ?";
+                                                $sq = db_query($quer, [$row['ds_id'], $check_day]);
                                                 while($vop=mysqli_fetch_assoc($sq)){
                                                    
                                                   $start_time = strtotime($vop['da_start_time']);
@@ -44,8 +44,8 @@
                                                       }
                                                       else{
                                                           //here we are going to check niba muri DB iyi date itari already booked.
-                                                          $que = "SELECT count(*) from bookings where b_ref_doctor_availability = {$vop['da_id']} and b_status in ('APPROVED','PAYMENT PENDING') and b_appointment_date = '{$day_date_full}' and b_appointment_time = '{$print_time}'";
-                                                          $re = mysqli_query($con,$que);
+                                                          $que = "SELECT count(*) from bookings where b_ref_doctor_availability = ? and b_status in ('APPROVED','PAYMENT PENDING') and b_appointment_date = ? and b_appointment_time = ?";
+                                                          $re = db_query($que, [$vop['da_id'], $day_date_full, $print_time]);
                                                           $bop = mysqli_fetch_assoc($re);
                                                           $count_yes = $bop['count(*)'];
 
@@ -66,8 +66,8 @@
                                                     }
                                                   else{
                                                      //here we are going to check niba muri DB iyi date itari already booked.
-                                                      $que = "SELECT count(*) from bookings where b_ref_doctor_availability = {$vop['da_id']} and b_status in ('APPROVED','PAYMENT PENDING') and b_appointment_date = '{$day_date_full}' and b_appointment_time = '{$print_time}'";
-                                                      $re = mysqli_query($con,$que);
+                                                      $que = "SELECT count(*) from bookings where b_ref_doctor_availability = ? and b_status in ('APPROVED','PAYMENT PENDING') and b_appointment_date = ? and b_appointment_time = ?";
+                                                      $re = db_query($que, [$vop['da_id'], $day_date_full, $print_time]);
                                                       $bop = mysqli_fetch_assoc($re);
                                                       $count_yes = $bop['count(*)'];
 

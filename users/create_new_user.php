@@ -58,7 +58,7 @@ require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
 									<option value="">Select Institution</option>
 								<?php 
 								$dery = "SELECT * FROM healthcare_institutions where is_valid = 'YES' order by hi_institute asc";
-								$fer = mysqli_query($con,$dery);
+								$fer = db_query($dery);
 								while($drow=mysqli_fetch_assoc($fer)){
 									?>
 									<option value="<?php echo e($drow['hi_id']); ?>"><?php echo e($drow['hi_institute']); ?></option>
@@ -78,8 +78,8 @@ require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
 							<div class="col-md-6 col-sm-6 ">
 								<select class="form-control" required="required" id="institution" name="institution">
 								<?php 
-								 $q = "SELECT * FROM users where user_id = '{$_SESSION['id']}'";
-					              $rf = mysqli_query($con,$q);
+								 $q = "SELECT * FROM users where user_id = ?";
+					              $rf = db_query($q, [$_SESSION['id']]);
 					              $vor = mysqli_fetch_assoc($rf);
 								?>
 									<option value="<?php echo e($vor['ref_healthcare_providers']); ?>">1</option>

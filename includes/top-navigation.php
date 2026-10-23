@@ -1,8 +1,8 @@
 <?php defined('MENZICARE_APP') || exit; ?>
 <?php
 if(isset($_SESSION['id'])){
-$sery = "SELECT * FROM users where user_id = {$_SESSION['id']}";
-$fo = mysqli_query($con,$sery);
+$sery = "SELECT * FROM users where user_id = ?";
+$fo = db_query($sery, [$_SESSION['id']]);
 $c = mysqli_fetch_assoc($fo);
 $fullname = $c['name'];
 if($c['image'] == 'no_user.png'){
@@ -44,8 +44,8 @@ else{
 
                 <?php 
                   if($_SESSION['role'] == 2){
-                    $kweri = "SELECT count(*) FROM bookings_third_view where ds_ref_user = '{$_SESSION['id']}' and  b_status in ('SUBMITTED','PAYMENT PENDING','APPROVED')";
-                    $resi = mysqli_query($con,$kweri);
+                    $kweri = "SELECT count(*) FROM bookings_third_view where ds_ref_user = ? and  b_status in ('SUBMITTED','PAYMENT PENDING','APPROVED')";
+                    $resi = db_query($kweri, [$_SESSION['id']]);
                     $ros = mysqli_fetch_assoc($resi);
                     if($ros['count(*)'] > 0){
                       ?>
@@ -58,8 +58,8 @@ else{
                           <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
 
                             <?php 
-                            $kweria = "SELECT count(*) FROM bookings_third_view where ds_ref_user = '{$_SESSION['id']}' and  b_status in ('SUBMITTED')";
-                            $resia = mysqli_query($con,$kweria);
+                            $kweria = "SELECT count(*) FROM bookings_third_view where ds_ref_user = ? and  b_status in ('SUBMITTED')";
+                            $resia = db_query($kweria, [$_SESSION['id']]);
                             $rosa = mysqli_fetch_assoc($resia);
                             if($rosa['count(*)'] > 0){
                               ?>
@@ -80,8 +80,8 @@ else{
                             ?>
 
                             <?php 
-                            $kwerias = "SELECT count(*) FROM bookings_third_view where ds_ref_user = '{$_SESSION['id']}' and  b_status in ('PAYMENT PENDING')";
-                            $resias = mysqli_query($con,$kwerias);
+                            $kwerias = "SELECT count(*) FROM bookings_third_view where ds_ref_user = ? and  b_status in ('PAYMENT PENDING')";
+                            $resias = db_query($kwerias, [$_SESSION['id']]);
                             $rosas = mysqli_fetch_assoc($resias);
                             if($rosas['count(*)'] > 0){
                               ?>
@@ -102,8 +102,8 @@ else{
                             ?>
 
                             <?php 
-                            $kweriaa = "SELECT count(*) FROM bookings_third_view where ds_ref_user = '{$_SESSION['id']}' and  b_status in ('APPROVED')";
-                            $resiaa = mysqli_query($con,$kweriaa);
+                            $kweriaa = "SELECT count(*) FROM bookings_third_view where ds_ref_user = ? and  b_status in ('APPROVED')";
+                            $resiaa = db_query($kweriaa, [$_SESSION['id']]);
                             $rosaa = mysqli_fetch_assoc($resiaa);
                             if($rosaa['count(*)'] > 0){
                               ?>

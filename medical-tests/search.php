@@ -32,7 +32,7 @@
                           <option value="">Select Medical Test</option>
                           <?php
                           $query = "SELECT * FROM tests where test_status = 'ACTIVE'";
-                          $re = mysqli_query($con,$query);
+                          $re = db_query($query);
                           while($rop=mysqli_fetch_assoc($re)){
                             ?>
                             <option value="<?php echo e($rop['test_id']); ?>"><?php echo e($rop['test_name']); ?></option>

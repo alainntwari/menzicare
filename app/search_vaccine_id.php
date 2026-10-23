@@ -1,7 +1,7 @@
 <?php
 include "../includes/config.php";
 
-$vaccine = strtoupper($con->real_escape_string($_GET['vaccine'] ?? ''));
+$vaccine = strtoupper((string)($_GET['vaccine'] ?? ''));
 
 ?> 
 <div class="">
@@ -36,15 +36,15 @@ $vaccine = strtoupper($con->real_escape_string($_GET['vaccine'] ?? ''));
                       <div class="col-md-5 col-sm-6 ">
                         <select required="required" id="search-vaccine" class="form-control" onchange="search_vaccine()">
                           <?php
-                           $query1 = "SELECT * FROM vaccines where vaccine_id = '{$vaccine}'";
-                          $re1 = mysqli_query($con,$query1);
+                           $query1 = "SELECT * FROM vaccines where vaccine_id = ?";
+                          $re1 = db_query($query1, [$vaccine]);
                           while($rop=mysqli_fetch_assoc($re1)){
                             ?>
                             <option value="<?php echo e($rop['vaccine_id']); ?>"><?php echo e($rop['vaccine_name']); ?></option>
                             <?php
                           }
-                          $query = "SELECT * FROM vaccines where vaccine_status = 'ACTIVE' and vaccine_id <> '{$vaccine}'";
-                          $re = mysqli_query($con,$query);
+                          $query = "SELECT * FROM vaccines where vaccine_status = 'ACTIVE' and vaccine_id <> ?";
+                          $re = db_query($query, [$vaccine]);
                           while($rop=mysqli_fetch_assoc($re)){
                             ?>
                             <option value="<?php echo e($rop['vaccine_id']); ?>"><?php echo e($rop['vaccine_name']); ?></option>
@@ -73,8 +73,8 @@ $vaccine = strtoupper($con->real_escape_string($_GET['vaccine'] ?? ''));
             <div id="content-id">
               <div class="row">
               <?php
-              $que = "SELECT * FROM vaccine_institution_location_concatination_new where vaccine_id = '{$vaccine}'";
-              $res = mysqli_query($con,$que);
+              $que = "SELECT * FROM vaccine_institution_location_concatination_new where vaccine_id = ?";
+              $res = db_query($que, [$vaccine]);
               while($row=mysqli_fetch_assoc($res)){
               	?> 
               	

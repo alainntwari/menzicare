@@ -18,7 +18,7 @@ if($cow['total'] == 0){
  	if($res){
  		alert_redirect('Successfully saved', '../users/');
  	}
- 	alert_redirect('Failed to isnert into database', '../users/');
+ 	alert_redirect('Failed to insert into database', '../users/');
 }
-// arleady exists
-alert_redirect('Schedule Arleady saved in database', '../users/');
+// already exists
+alert_redirect('Schedule Already saved in database', '../users/');

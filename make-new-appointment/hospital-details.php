@@ -4,8 +4,8 @@
     $hospital_name = $hospital;
     $hospital_id = $hospital_id;
 
-    $fer = "SELECT * FROM hospital_details where hd_ref_hospital = {$hospital_id}";
-    $bo = mysqli_query($con,$fer);
+    $fer = "SELECT * FROM hospital_details where hd_ref_hospital = ?";
+    $bo = db_query($fer, [$hospital_id]);
     $cow = mysqli_fetch_assoc($bo);
     $website = $cow['hd_website'];
     $presentation = $cow['hd_presentation'];
@@ -16,8 +16,8 @@
     $logo = $cow['hd_logo'];
 
 
-    $fer2 = "SELECT * FROM providers_location where pl_ref_provider = {$hospital_id}";
-    $bo2= mysqli_query($con,$fer2);
+    $fer2 = "SELECT * FROM providers_location where pl_ref_provider = ?";
+    $bo2= db_query($fer2, [$hospital_id]);
     $cow2 = mysqli_fetch_assoc($bo2);
     $map = $cow2['map'];
     $contact = '+250'.$cow2['pl_phone'];
@@ -80,8 +80,8 @@
               </div>
               <?php
               $sp_name = 'none';
-              $gery = "SELECT * FROM users_doctors_specialities_names where ref_healthcare_providers = '{$hospital_id}' order by sp_name";
-              $fer = mysqli_query($con,$gery);
+              $gery = "SELECT * FROM users_doctors_specialities_names where ref_healthcare_providers = ? order by sp_name";
+              $fer = db_query($gery, [$hospital_id]);
               while($gow = mysqli_fetch_assoc($fer)){
                 if($sp_name != $gow['sp_name']){
                     if($gow['image'] == 'no_user.png'){

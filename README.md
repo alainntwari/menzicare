@@ -1,5 +1,37 @@
 # MenziCare
 
+MenziCare is a web app for booking healthcare in Rwanda. Patients find doctors, medical tests and
+vaccinations at partner healthcare institutions and book appointments online, with SMS
+confirmations. Doctors and institution admins manage the bookings, write consultation notes
+(stored encrypted) and maintain doctor profiles. A super admin manages the institutions.
+
+Plain PHP + MySQL, with the [Gentelella](https://github.com/ColorlibHQ/gentelella) admin theme
+(Bootstrap 4, jQuery).
+
+## Project structure
+
+| Path | What it is |
+|------|------------|
+| `index.php` | Redirects to `home/` |
+| `home/`, `doctor-appointments/`, `medical-tests/`, `vaccinations/` | Public search and booking pages |
+| `make-new-appointment/` | Booking form for one doctor slot, test or vaccine |
+| `login/` | Login and sign-up forms |
+| `appointments/`, `patients/` | Bookings and patients for doctors and admins |
+| `medical-records/` | A patient's own consultation notes |
+| `users/`, `health-care-institutions/`, `online-users/` | Admin pages |
+| `doctor-details/` | Public doctor profile, loaded via AJAX |
+| `app/` | Form handlers (POST targets) and AJAX search endpoints |
+| `includes/` | Shared config, security helpers, layout (head, sidebar, navigation, scripts) |
+| `aionem.net/api/` | SMS / mail API client |
+| `database/migrations/` | SQL to run on the database, in order |
+| `tools/` | One-off command-line scripts |
+| `build/`, `src/`, `vendors/`, `assets/` | Theme CSS/JS (and its sources), third-party libraries, images |
+
+Pages are built from fragments: an `index.php` loads `includes/config.php`, then includes
+`head.php`, `sidebar.php`, `top-navigation.php`, the page's own fragments, `footer.php` and
+`scripts.php`. Fragment files start with `defined('MENZICARE_APP') || exit;` so they
+can't be opened directly.
+
 ## Setup
 
 Requirements: PHP 7.4+ (with `mysqli`/mysqlnd and `openssl`), MySQL/MariaDB, Apache.

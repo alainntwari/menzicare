@@ -32,7 +32,7 @@ require_login();
 		// here we will call the Alan's function
 
 		$date_time = $date.' at '.$time;
-		AioNem_Net_API_SMS_Send_Net("+250".$user_number, $date_time." is your appointment. Appointement code number is ".$code);
+		AioNem_Net_API_SMS_Send_Net("+250".$user_number, $date_time." is your appointment. Appointment code number is ".$code);
 
 		if($institution_number !== ''){
 			AioNem_Net_API_SMS_Send_Net("+250".$institution_number," A new doctor booking");
