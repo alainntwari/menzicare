@@ -13,23 +13,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$password_repeat = (string)($_POST['password-repeat'] ?? '');
 
 	if ($name === '' || $phone === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-		alert_redirect('Please fill in your name, a valid email and phone number', '../login/#signup');
+		flash_redirect('Please fill in your name, a valid email and phone number', '../login/#signup');
 	}
 	if (strlen($password) < 8) {
-		alert_redirect('Your password must be at least 8 characters long', '../login/#signup');
+		flash_redirect('Your password must be at least 8 characters long', '../login/#signup');
 	}
 	if (!hash_equals($password, $password_repeat)) {
-		alert_redirect('The two passwords do not match', '../login/#signup');
+		flash_redirect('The two passwords do not match', '../login/#signup');
 	}
 
 	$wait = otp_resend_wait($_SESSION['pending_registration'] ?? null);
 	if ($wait > 0) {
-		alert_redirect('Please wait ' . $wait . ' seconds before requesting a new code', 'register.php');
+		flash_redirect('Please wait ' . $wait . ' seconds before requesting a new code', 'register.php');
 	}
 
 	$ro = db_row("SELECT count(*) AS total FROM users WHERE phone_number = ?", [$phone]);
 	if ($ro && $ro['total'] > 0) {
-		alert_redirect('User already exists, please login into your account', '../login/');
+		flash_redirect('User already exists, please login into your account', '../login/');
 	}
 
 	$code = otp_generate();
@@ -70,8 +70,11 @@ $name = $_SESSION['pending_registration']['name'];
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link rel="icon" href="../assets/images/logo2.png" type="image/png" />
+    <link href="../assets/css/menzicare.css" rel="stylesheet">
   </head>
 <body class="login">
+    <?php echo render_flash(); ?>
     <div>
       <a class="hiddenanchor" id="signup"></a>
       <a class="hiddenanchor" id="signin"></a>
@@ -112,7 +115,7 @@ $name = $_SESSION['pending_registration']['name'];
 
                 <div>
                   <h1><img src="../assets/images/logo2.png" width="100px" /></h1>
-                  <p>©2021 All Rights Reserved.</p>
+                  <p>©<?php echo date('Y'); ?> MenziCare. All rights reserved.</p>
                 </div>
               </div>
             </form>

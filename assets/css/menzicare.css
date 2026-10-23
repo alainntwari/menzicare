@@ -1,0 +1,35 @@
+/* MenziCare additions on top of the Gentelella theme */
+
+/* Flash messages: fixed at the top so they show on every layout */
+.menzi-flash-stack {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  width: min(560px, calc(100% - 32px));
+}
+.menzi-flash {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .15);
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+/* Table column widths (replaces invisible spacer text) */
+.menzi-col-wide { min-width: 180px; }
+.menzi-col-form { min-width: 320px; }
+
+/* Content loading via assets/js/menzicare.js */
+[aria-busy="true"] { cursor: progress; transition: opacity .15s; }
+
+/* Phones */
+@media (max-width: 767px) {
+  .right_col { padding: 10px !important; }
+  .x_panel { padding: 10px; }
+  .x_title h2 { font-size: 16px; white-space: normal; }
+  .x_title h2 small { display: block; margin-left: 0; }
+  .login_wrapper { margin-top: 2%; padding: 0 16px; }
+  .menzi-col-form { min-width: 260px; }
+  iframe { max-width: 100%; }
+  .tile-stats h3 { font-size: 16px !important; }
+}

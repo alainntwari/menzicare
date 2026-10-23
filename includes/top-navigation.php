@@ -1,4 +1,5 @@
 <?php defined('MENZICARE_APP') || exit; ?>
+<?php echo render_flash(); ?>
 <?php
 if(isset($_SESSION['id'])){
 $sery = "SELECT * FROM users where user_id = ?";
@@ -33,8 +34,8 @@ else{
                     <img src="<?php echo e($image); ?>" alt=""><?php echo e($fullname); ?>
                   </a>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item"  href="javascript:;"> Profile</a>
-                      <a class="dropdown-item"  href="javascript:;">
+                    <a class="dropdown-item"  href="../account/"> My Account</a>
+                      <a class="dropdown-item"  href="../account/">
                         Change Password
                       </a>
                   <a class="dropdown-item"  href="javascript:;">Help</a>

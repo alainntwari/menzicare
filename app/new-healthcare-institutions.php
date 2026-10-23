@@ -18,7 +18,7 @@ $row_sector = db_row("SELECT sector_name FROM sectors where sector_id = ?", [(in
 $row_cell = db_row("SELECT cell_name FROM cells where cell_id = ?", [(int)($_POST['cell'] ?? 0)]);
 $row_village = db_row("SELECT village_name FROM villages where village_id = ?", [(int)($_POST['village'] ?? 0)]);
 if ($name === '' || !$row_province || !$row_district || !$row_sector || !$row_cell || !$row_village) {
-	alert_redirect('Please fill in the institution name and its full location', '../health-care-institutions/');
+	flash_redirect('Please fill in the institution name and its full location', '../health-care-institutions/');
 }
 $province = $row_province['province_name'];
 $district = $row_district['district_name'];
@@ -31,6 +31,7 @@ if($ro['total'] == 0){
 	// here we are going to insert
 	$res = db_query("INSERT INTO healthcare_institutions (hi_user,hi_institute,hi_created_date) values (?,?,?)", [$by, $name, $today_date]);
 	if($res){
+		audit('institution_created', ['details' => ['name' => $name]]);
 		$hi_id = mysqli_insert_id($con);
 
 		$b = db_query(
@@ -38,10 +39,10 @@ if($ro['total'] == 0){
 			[$hi_id, $province, $district, $sector, $cell, $village, $phone, $email]
 		);
 		if($b){
-			alert_redirect('Saved Successfully', '../health-care-institutions/');
+			flash_redirect('Saved Successfully', '../health-care-institutions/', 'success');
 		}
-		alert_redirect('Error while inserting in providers_location', '../health-care-institutions/');
+		flash_redirect('Error while inserting in providers_location', '../health-care-institutions/');
 	}
-	alert_redirect('Error while inserting in healthcare_institutions', '../health-care-institutions/');
+	flash_redirect('Error while inserting in healthcare_institutions', '../health-care-institutions/');
 }
-alert_redirect('Institution already exists', '../health-care-institutions/');
+flash_redirect('Institution already exists', '../health-care-institutions/');

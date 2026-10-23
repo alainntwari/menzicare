@@ -99,7 +99,7 @@ $location = strtoupper((string)($_GET['location'] ?? ''));
                                               <?php
                                             }
 
-                                            $onclick = 'next_day_'.$div_id.'()';
+                                            $onclick = 'next_day('.$div_id.')';
                                           ?> 
                                           
                                           

@@ -11,11 +11,11 @@ if (!can_manage_service($service)) {
 }
 // Links are shown as <a href>, so only web links are allowed (no javascript: etc.)
 if (!preg_match('#^https?://#i', $link)) {
-	alert_redirect('Please enter a full link starting with https://', '../users/');
+	flash_redirect('Please enter a full link starting with https://', '../users/');
 }
 
 $res = db_query("INSERT into social_media_links (sml_link,sml_service_type,sml_service,sml_link_type) values (?,?,?,?)", [$link, $type, $service, $social_type]);
 if($res){
-	alert_redirect('added', '../users/');
+	flash_redirect('Added successfully', '../users/', 'success');
 }
-alert_redirect('Error, please contact super admin', '../users/');
+flash_redirect('Error, please contact super admin', '../users/');

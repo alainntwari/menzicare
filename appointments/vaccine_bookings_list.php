@@ -29,16 +29,16 @@
             <tr>
 
 
-              <th>Vaccine <font style="opacity:0.0; color:white;">RejectRejectRejectRejectRejec</font></th>
+              <th class="menzi-col-wide">Vaccine</th>
               
                <?php if($_SESSION['role'] != 4) {
                 ?>
-                 <th>User <font style="opacity:0.0; color:white;">RejectRejectRejectRejectReject</font></th>
+                 <th class="menzi-col-wide">User</th>
                 <?php
                   }
                   else{
                     ?>
-                   <th>Hospital / Clinic <font style="opacity:0.0; color:white;">RejectRejectRejectRejectReject</font></th>
+                   <th class="menzi-col-wide">Hospital / Clinic</th>
                     <?php
                   }
                ?>
@@ -46,14 +46,14 @@
  
              <th>Application Date</th>
               <th>Date & Time</th>
-              <th>Code <font style="opacity:0.0; color:white;">RejectRejectRejectRejectReject</font></th>
+              <th class="menzi-col-wide">Code</th>
               <th>status</th>
               <?php
               if($_SESSION['role'] == 2 || $_SESSION['role'] == 3){
                 ?>
-              <th>Approve <font style="opacity:0.0; color:white;">ApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApprove </font></th>
+              <th class="menzi-col-form">Approve</th>
               <th>Request to Change date or Time</th>
-              <th>Reject <font style="opacity:0.0; color:white;">RejectRejectRejectRejectRejectRejectRejectRejectRejectRejectRejectRejectRejectRejectReject</font></th>
+              <th class="menzi-col-form">Reject</th>
                 <?php
               }
               ?>

@@ -29,28 +29,28 @@
             <tr>
               <?php if($_SESSION['role'] != 4) {
                 ?>
-                 <th>User <font style="opacity:0.0; color:white;">RejectRejectRejectRejectReject</font></th>
+                 <th class="menzi-col-wide">User</th>
                 <?php
                   }
                   else{
                     ?>
-                   <th>Hospital / Clinic <font style="opacity:0.0; color:white;">RejectRejectRejectRejectReject</font></th>
+                   <th class="menzi-col-wide">Hospital / Clinic</th>
                     <?php
                   }
                ?>
              
 
               <th>Application Date</th>
-              <th>Service <font style="opacity:0.0; color:white;">RejectRejectRejectRejectRejec</font></th>
+              <th class="menzi-col-wide">Service</th>
               <th>Date & Time</th>
-              <th>Code <font style="opacity:0.0; color:white;">RejectRejectRejectRejectReject</font></th>
+              <th class="menzi-col-wide">Code</th>
               <th>status</th>
               <?php
               if($_SESSION['role'] == 2 || $_SESSION['role'] == 3){
                 ?>
-              <th><font style="opacity:0.0; color:white;">ApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApproveApprove </font></th>
+              <th class="menzi-col-form"></th>
               <th></th>
-              <th><font style="opacity:0.0; color:white;">RejectRejectRejectRejectRejectRejectRejectRejectRejectRejectRejectRejectRejectRejectReject</font></th>
+              <th class="menzi-col-form"></th>
                 <?php
               }
               ?>
@@ -134,7 +134,8 @@
                                   <label class="col-form-label col-md-9 col-sm-9 label-align">Patient's medical history available in the system<span class="required">*</span>
                                   </label>
                                   <div class="col-md-3 col-sm-3 ">
-                                    <button type="submit" class="btn btn-success" onclick="request_permission_to_patient(<?php echo e($row['b_ref_user']); ?>)">Request access</button>
+                                    <button type="button" class="btn btn-success" onclick="request_permission_to_patient(<?php echo e($row['b_ref_user']); ?>, <?php echo e($row['b_id']); ?>)">Request access</button>
+                                    <div id="otp_area_<?php echo e($row['b_id']); ?>" class="small text-muted" aria-live="polite"></div>
                                   </div>
                                 </div>
                                 <form action="../app/check_access_otp.php" method="POST">

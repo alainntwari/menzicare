@@ -10,4 +10,4 @@ $_SESSION['appointment_type'] = 'TEST';
 if(is_logged_in()){
 	include 'insert_in_db_test.php';
 }
-alert_redirect('To make this appointment you must be logged in in your account first, Click OK to proceed with login', '../login/');
+flash_redirect('To make this appointment, please login to your account first. Your booking will be saved right after you login.', '../login/', 'info');
