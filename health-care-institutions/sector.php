@@ -4,8 +4,9 @@
 <div class="col-md-6 col-sm-6 ">
 <?php
 require '../includes/config.php';
-$sector = $_GET["sector"];
-if($sector !="")
+require_role(ROLE_SUPER_ADMIN);
+$sector = (int)($_GET["sector"] ?? 0);
+if($sector > 0)
 {
 	$query = "SELECT * FROM cells where parent_id = $sector";
 	$res = mysqli_query($con,$query);
@@ -13,7 +14,7 @@ if($sector !="")
 	<option value="">Cell</option>';
 	while($row=mysqli_fetch_assoc($res)){
 		
-		echo " <option value='{$row['cell_id']}'>{$row['cell_name']}</option>";
+		echo " <option value='" . e($row['cell_id']) . "'>" . e($row['cell_name']) . "</option>";
 	}
 	echo"</select>";
 }

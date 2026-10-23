@@ -1,3 +1,4 @@
+<?php require "../includes/config.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,6 +32,7 @@
         <div class="animate form login_form">
           <section class="login_content">
             <form action="../app/login.php" method="POST" validate>
+<?php echo csrf_field(); ?>
               <h1>Login Form</h1>
               <div>
                 <input type="text" class="form-control" placeholder="code" required="required" id="code" name="code" />
@@ -65,6 +67,7 @@
         <div id="register" class="animate form registration_form">
           <section class="login_content">
             <form action="../app/register.php" method="POST">
+<?php echo csrf_field(); ?>
               <h1>Create Account</h1>
               <div>
                 <input type="text" name="name" class="form-control" placeholder="Your Full Name" required="" />
@@ -81,7 +84,7 @@
                 </div>
               </div>
               <div>
-                <input type="password" name="password" class="form-control" placeholder="Password" required="" />
+                <input type="password" name="password" class="form-control" placeholder="Password (at least 8 characters)" required="" minlength="8" />
               </div>
               <div>
                 <input type="password" name="password-repeat" class="form-control" placeholder="Repeat Password" required="" />

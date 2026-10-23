@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <div class="row">
             <div class="col-md-12 col-sm-12 ">
               <div class="x_panel">
@@ -34,7 +35,7 @@
                           $re = mysqli_query($con,$query);
                           while($rop=mysqli_fetch_assoc($re)){
                             ?>
-                            <option value="<?php echo $rop['vaccine_id']; ?>"><?php echo $rop['vaccine_name']; ?></option>
+                            <option value="<?php echo e($rop['vaccine_id']); ?>"><?php echo e($rop['vaccine_name']); ?></option>
                             <?php
                           }
                           ?>

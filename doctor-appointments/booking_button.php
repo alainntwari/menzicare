@@ -1,12 +1,12 @@
-
+<?php defined('MENZICARE_APP') || exit; ?>
                                                 <?php
                                                 $d=strtotime("+1 day", $d);
                                                 $day = date("D", $d);
                                                 $day_date = date("j M", $d);
                                                 $day_date_full = date("j-M-Y", $d);
                                                 ?>
-                                                <h6><b><?php echo $day; ?></b></h6>
-                                                <font><?php echo $day_date; ?></font>
+                                                <h6><b><?php echo e($day); ?></b></h6>
+                                                <font><?php echo e($day_date); ?></font>
                                                 <hr style="margin-top: 0px">
 
                                                 <?php 
@@ -38,7 +38,7 @@
                                                       if($current_date_to_print <= $current_today_date_to_compare){
                                                         if($time_igezweho <= $nonaha){
                                                         ?>
-                                                        <div class="text-center timer add_player_list" style="padding: 3px; cursor: not-allowed; background: #acb7c4;"><?php echo $print_time; ?></div>
+                                                        <div class="text-center timer add_player_list" style="padding: 3px; cursor: not-allowed; background: #acb7c4;"><?php echo e($print_time); ?></div>
                                                       
                                                         <?php
                                                       }
@@ -52,13 +52,13 @@
 
                                                           if($count_yes > 0){
                                                             ?>
-                                                            <div class="text-center timer add_player_list" style="padding: 3px; cursor: not-allowed; background: #acb7c4;"><?php echo $print_time; ?></div>
+                                                            <div class="text-center timer add_player_list" style="padding: 3px; cursor: not-allowed; background: #acb7c4;"><?php echo e($print_time); ?></div>
                                                             <?php
                                                           }
                                                           else{
                                                             ?>
-                                                              <a href="../make-new-appointment/?dahd=<?php echo $vop['da_id']; ?>&cbh=<?php echo $print_time; ?>&aty=1&ddf=<?php echo $day_date_full; ?>">
-                                                              <div class="text-center timer add_player_list" style="padding: 3px; cursor: pointer;"><?php echo $print_time; ?></div>
+                                                              <a href="../make-new-appointment/?dahd=<?php echo e($vop['da_id']); ?>&cbh=<?php echo e($print_time); ?>&aty=1&ddf=<?php echo e($day_date_full); ?>">
+                                                              <div class="text-center timer add_player_list" style="padding: 3px; cursor: pointer;"><?php echo e($print_time); ?></div>
                                                             </a>
                                                             <?php
                                                           }
@@ -74,13 +74,13 @@
 
                                                       if($count_yes > 0){
                                                         ?>
-                                                        <div class="text-center timer add_player_list" style="padding: 3px; padding-right: 3px; cursor: not-allowed; background: #acb7c4;"><?php echo $print_time.' '; ?></div>
+                                                        <div class="text-center timer add_player_list" style="padding: 3px; padding-right: 3px; cursor: not-allowed; background: #acb7c4;"><?php echo e($print_time.' '); ?></div>
                                                         <?php
                                                       }
                                                       else{
                                                         ?>
-                                                          <a href="../make-new-appointment/?dahd=<?php echo $vop['da_id']; ?>&cbh=<?php echo $print_time; ?>&aty=1&ddf=<?php echo $day_date_full; ?>">
-                                                          <div class="text-center timer add_player_list" style="padding: 3px; padding-right: 3px; cursor: pointer;"><?php echo $print_time.' '; ?></div>
+                                                          <a href="../make-new-appointment/?dahd=<?php echo e($vop['da_id']); ?>&cbh=<?php echo e($print_time); ?>&aty=1&ddf=<?php echo e($day_date_full); ?>">
+                                                          <div class="text-center timer add_player_list" style="padding: 3px; padding-right: 3px; cursor: pointer;"><?php echo e($print_time.' '); ?></div>
                                                         </a>
                                                         <?php
                                                       }

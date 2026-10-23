@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <?php
 
 $service_availability = $service_availability;
@@ -24,7 +25,7 @@ $hospital_id = $row['hi_id'];
 						<div class="col-md-12 col-sm-12 ">
 							<div class="x_panel">
 								<div class="x_title">
-									<h2 style="font-size: 16px;">Book Appointment of <b> <?php echo $service; ?> </b>at <b><?php echo $hospital; ?></b> </h2>
+									<h2 style="font-size: 16px;">Book Appointment of <b> <?php echo e($service); ?> </b>at <b><?php echo e($hospital); ?></b> </h2>
 									<ul class="nav navbar-right panel_toolbox">
 										<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 										</li>
@@ -45,13 +46,14 @@ $hospital_id = $row['hi_id'];
 								<div class="x_content">
 									<br />
 									<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/booking-vaccine.php">
+<?php echo csrf_field(); ?>
 
 										<div class="item form-group">
 											<label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Appointment Date<span class="required">*</span>
 											</label>
 											<div class="col-md-6 col-sm-6 ">
                         <input type="date" name="date"  class="form-control" required="required">
-                        <input type="test" name="service_availability" value="<?php echo $service_availability; ?>"  class="form-control" style="display: none;" required="required">
+                        <input type="test" name="service_availability" value="<?php echo e($service_availability); ?>"  class="form-control" style="display: none;" required="required">
 											
 											</div>
 										</div>

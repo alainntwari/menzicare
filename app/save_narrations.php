@@ -1,48 +1,34 @@
 <?php
 include "../includes/config.php";
-$booking_id = $con->real_escape_string($_POST['booking_id']);
-$patient_history = $_POST['patient_history'];
-$physical_examination = $_POST['physical_examination'];
-$investigation = $_POST['investigation'];
+require_role(ROLE_DOCTOR, ROLE_ADMIN);
+
+$booking_id = (int)($_POST['booking_id'] ?? 0);
+if (!can_manage_booking($booking_id)) {
+	deny_access('You can only write notes for your own appointments');
+}
+
+// Each note is encrypted with its own random IV (see menzi_encrypt in includes/security.php)
+$patient_history = menzi_encrypt($_POST['patient_history'] ?? '');
+$physical_examination = menzi_encrypt($_POST['physical_examination'] ?? '');
+$investigation = menzi_encrypt($_POST['investigation'] ?? '');
 $today = date("j-M-Y");
+$by = (int)$_SESSION['id'];
 
-// Store the cipher method
-$ciphering = "AES-128-CTR";
-  
-// Use OpenSSl Encryption method
-$iv_length = openssl_cipher_iv_length($ciphering);
-$options = 0;
-  
-// Non-NULL Initialization Vector for encryption
-$encryption_iv = '1234567891011121';
-  
-// Store the encryption key
-$encryption_key = "yann_vladimir_bajeneza";
-
-// Use openssl_encrypt() function to encrypt the data
-$patient_history = openssl_encrypt($patient_history, $ciphering,
-            $encryption_key, $options, $encryption_iv);
-$physical_examination = openssl_encrypt($physical_examination, $ciphering,
-            $encryption_key, $options, $encryption_iv);
-$investigation = openssl_encrypt($investigation, $ciphering,
-            $encryption_key, $options, $encryption_iv);
-
-$que = "SELECT count(*) from doctors_narrations where dn_ref_b_id = '{$booking_id}'";
-$r = mysqli_query($con,$que);
-$ro = mysqli_fetch_assoc($r);
-if($ro['count(*)'] == 0){
-	$query = "INSERT INTO doctors_narrations (dn_ref_b_id,dn_patient_history,dn_physical_examination,dn_investigation,dn_updated_date,dn_updated_by) values ('{$booking_id}','{$patient_history}','{$physical_examination}','{$investigation}','{$today}','{$_SESSION['id']}')";
+$ro = db_row("SELECT count(*) AS total from doctors_narrations where dn_ref_b_id = ?", [$booking_id]);
+if ($ro['total'] == 0) {
+	$res = db_query(
+		"INSERT INTO doctors_narrations (dn_ref_b_id,dn_patient_history,dn_physical_examination,dn_investigation,dn_updated_date,dn_updated_by) values (?,?,?,?,?,?)",
+		[$booking_id, $patient_history, $physical_examination, $investigation, $today, $by]
+	);
 }
-else{
-	$query = "UPDATE doctors_narrations set dn_patient_history = '{$patient_history}',dn_physical_examination = '{$physical_examination}',dn_investigation = '{$investigation}',dn_updated_by = '{$_SESSION['id']}', dn_updated_date = '{$today}' where dn_ref_b_id = '{$booking_id}'";
+else {
+	$res = db_query(
+		"UPDATE doctors_narrations set dn_patient_history = ?, dn_physical_examination = ?, dn_investigation = ?, dn_updated_by = ?, dn_updated_date = ? where dn_ref_b_id = ?",
+		[$patient_history, $physical_examination, $investigation, $by, $today, $booking_id]
+	);
 }
 
-$res = mysqli_query($con,$query);
-if($res){
-	echo "<script>alert('Saved Successfully');window.location='../appointments/';</script>";
-		exit();
+if ($res) {
+	alert_redirect('Saved Successfully', '../appointments/');
 }
-else{
-	echo "<script>alert('An error while saving. Please contact system admin');window.location='../appointments/';</script>";
-		exit();
-}
+alert_redirect('An error while saving. Please contact system admin', '../appointments/');

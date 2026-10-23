@@ -1,6 +1,10 @@
 <?php
 include "../includes/config.php";
-$user_id = $_GET['id'];
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
+$user_id = (int)($_GET['id'] ?? 0);
+if (!can_manage_user($user_id)) {
+  deny_access();
+}
 $que = "SELECT * FROM users where user_id = {$user_id}";
 $res = mysqli_query($con,$que);
 $row = mysqli_fetch_assoc($res);
@@ -21,7 +25,7 @@ $service = $row1['ds_id'];
   <div class="col-md-10 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2><i class="fa fa-bars"></i> <?php echo $name; ?> <small>Profile</small></h2>
+                    <h2><i class="fa fa-bars"></i> <?php echo e($name); ?> <small>Profile</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -86,8 +90,8 @@ $service = $row1['ds_id'];
                                 while($xow5 = mysqli_fetch_assoc($br5)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow5['e_certificate']; ?></td>
-                                    <td><button class="btn btn-outline-danger" onclick="delete_education(<?php echo $xow5['e_id']; ?>)"><b>X</b></button></td>
+                                    <td><?php echo e($xow5['e_certificate']); ?></td>
+                                    <td><button class="btn btn-outline-danger" onclick="delete_education(<?php echo e($xow5['e_id']); ?>)"><b>X</b></button></td>
                                   </tr>
                                   <?php
                                 }
@@ -98,13 +102,14 @@ $service = $row1['ds_id'];
                           </div>
                           <div class="col-md-4 col-sm-6">
                             <form class="form-horizontal form-label-left" method="POST" action="../app/add_education.php" validate>
+<?php echo csrf_field(); ?>
 
                               <div class="item row form-group">
                                 <label class="col-md-12 col-sm-12" for="name">Add Education
                                 <span class="required">*</span>
                                 </label>
                                 <div class="col-md-12 col-sm-12 ">
-                                  <input type="text" name="education_service" id="education_service" value="<?php echo $service; ?>" readonly="readonly" style="display: none;">
+                                  <input type="text" name="education_service" id="education_service" value="<?php echo e($service); ?>" readonly="readonly" style="display: none;">
                                   <input type="text" name="education_type" id="education_type" value="DOCTOR" readonly="readonly" style="display: none;">
 
 
@@ -145,8 +150,8 @@ $service = $row1['ds_id'];
                                 while($xow3 = mysqli_fetch_assoc($br3)){
                                   ?>
                                   <tr>
-                                    <td><a href="<?php echo $xow3['sml_link']; ?>" target="_blanck"><?php echo $xow3['sml_link_type']; ?></a></td>
-                                    <td><button class="btn btn-outline-danger" onclick="delete_link(<?php echo $xow3['sml_id']; ?>)"><b>X</b></button></td>
+                                    <td><a href="<?php echo e_url($xow3['sml_link']); ?>" target="_blanck"><?php echo e($xow3['sml_link_type']); ?></a></td>
+                                    <td><button class="btn btn-outline-danger" onclick="delete_link(<?php echo e($xow3['sml_id']); ?>)"><b>X</b></button></td>
                                   </tr>
                                   <?php
                                 }
@@ -157,13 +162,14 @@ $service = $row1['ds_id'];
                           </div>
                           <div class="col-md-4 col-sm-6">
                             <form class="form-horizontal form-label-left" method="POST" action="../app/add_social_media.php" validate>
+<?php echo csrf_field(); ?>
 
                               <div class="item row form-group">
                                 <label class="col-md-12 col-sm-12" for="name">Add Social Media Link
                                 <span class="required">*</span>
                                 </label>
                                 <div class="col-md-12 col-sm-12 ">
-                                  <input type="text" name="link_service" id="link_service" value="<?php echo $service; ?>" readonly="readonly" style="display: none;">
+                                  <input type="text" name="link_service" id="link_service" value="<?php echo e($service); ?>" readonly="readonly" style="display: none;">
                                   <input type="text" name="link_type" id="link_type" value="DOCTOR" readonly="readonly" style="display: none;">
                                   <select class="form-control" required="required" name="social_type" id="social_type">
                                    <option value="">Select Social Media</option>
@@ -207,8 +213,8 @@ $service = $row1['ds_id'];
                                 while($xow2 = mysqli_fetch_assoc($br2)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow2['p_payment']; ?></td>
-                                    <td><button class="btn btn-outline-danger" onclick="delete_payment(<?php echo $xow2['p_id']; ?>)"><b>X</b></button></td>
+                                    <td><?php echo e($xow2['p_payment']); ?></td>
+                                    <td><button class="btn btn-outline-danger" onclick="delete_payment(<?php echo e($xow2['p_id']); ?>)"><b>X</b></button></td>
                                   </tr>
                                   <?php
                                 }
@@ -219,12 +225,13 @@ $service = $row1['ds_id'];
                           </div>
                           <div class="col-md-4 col-sm-6">
                             <form class="form-horizontal form-label-left" method="POST" action="../app/add_payment.php" validate>
+<?php echo csrf_field(); ?>
 
                               <div class="item row form-group">
                                 <label class="col-md-12 col-sm-12" for="name">Add Payment method <span class="required">*</span>
                                 </label>
                                 <div class="col-md-12 col-sm-12 ">
-                                  <input type="text" name="payment_service" id="payment_service" value="<?php echo $service; ?>" readonly="readonly" style="display: none;">
+                                  <input type="text" name="payment_service" id="payment_service" value="<?php echo e($service); ?>" readonly="readonly" style="display: none;">
                                   <input type="text" name="payment_type" id="payment_type" value="DOCTOR" readonly="readonly" style="display: none;">
                                   <input class="form-control" required="required" type="text" name="payemnt_method" id="payemnt_method" placeholder="Type payment method here ">
                                   
@@ -262,8 +269,8 @@ $service = $row1['ds_id'];
                                 while($xow1 = mysqli_fetch_assoc($br1)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow1['i_insurance']; ?></td>
-                                    <td><button class="btn btn-outline-danger" onclick="delete_insurance(<?php echo $xow1['i_id']; ?>)"><b>X</b></button></td>
+                                    <td><?php echo e($xow1['i_insurance']); ?></td>
+                                    <td><button class="btn btn-outline-danger" onclick="delete_insurance(<?php echo e($xow1['i_id']); ?>)"><b>X</b></button></td>
                                   </tr>
                                   <?php
                                 }
@@ -274,12 +281,13 @@ $service = $row1['ds_id'];
                           </div>
                           <div class="col-md-4 col-sm-6">
                             <form class="form-horizontal form-label-left" method="POST" action="../app/add_insurance.php" validate>
+<?php echo csrf_field(); ?>
 
                               <div class="item row form-group">
                                 <label class="col-md-12 col-sm-12" for="name">Add Insurance <span class="required">*</span>
                                 </label>
                                 <div class="col-md-12 col-sm-12 ">
-                                  <input type="text" name="service" id="service" value="<?php echo $service; ?>" readonly="readonly" style="display: none;">
+                                  <input type="text" name="service" id="service" value="<?php echo e($service); ?>" readonly="readonly" style="display: none;">
                                   <input type="text" name="type" id="type" value="DOCTOR" readonly="readonly" style="display: none;">
                                   <input class="form-control" required="required" type="text" name="insurance" id="insurance" placeholder="Type insurance here ">
                                   
@@ -317,8 +325,8 @@ $service = $row1['ds_id'];
                                 while($xow4 = mysqli_fetch_assoc($br4)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow4['price_amount'].' '.$xow4['price_currency']; ?></td>
-                                    <td><button class="btn btn-outline-danger" onclick="delete_price(<?php echo $xow4['price_id']; ?>)"><b>X</b></button></td>
+                                    <td><?php echo e($xow4['price_amount'].' '.$xow4['price_currency']); ?></td>
+                                    <td><button class="btn btn-outline-danger" onclick="delete_price(<?php echo e($xow4['price_id']); ?>)"><b>X</b></button></td>
                                   </tr>
                                   <?php
                                 }
@@ -329,13 +337,14 @@ $service = $row1['ds_id'];
                           </div>
                           <div class="col-md-4 col-sm-6">
                             <form class="form-horizontal form-label-left" method="POST" action="../app/add_price.php" validate>
+<?php echo csrf_field(); ?>
 
                               <div class="item row form-group">
                                 <label class="col-md-12 col-sm-12" for="name">Update service price
                                 <span class="required">*</span>
                                 </label>
                                 <div class="col-md-12 col-sm-12 ">
-                                  <input type="text" name="price_service" id="price_service" value="<?php echo $service; ?>" readonly="readonly" style="display: none;">
+                                  <input type="text" name="price_service" id="price_service" value="<?php echo e($service); ?>" readonly="readonly" style="display: none;">
                                   <input type="text" name="price_type" id="price_type" value="DOCTOR" readonly="readonly" style="display: none;">
                                  
                                   <input class="form-control" required="required" type="number" name="price" id="price" placeholder="Enter price amount here">
@@ -374,8 +383,8 @@ $service = $row1['ds_id'];
                                 while($xow = mysqli_fetch_assoc($br)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow['sp_name']; ?></td>
-                                    <td><button class="btn btn-outline-info" onclick="specialties_hours(<?php echo $xow['ds_id']; ?>)">More Details</button></td>
+                                    <td><?php echo e($xow['sp_name']); ?></td>
+                                    <td><button class="btn btn-outline-info" onclick="specialties_hours(<?php echo e($xow['ds_id']); ?>)">More Details</button></td>
                                   </tr>
                                   <?php
                                 }
@@ -386,19 +395,20 @@ $service = $row1['ds_id'];
                           </div>
                           <div class="col-md-4 col-sm-6">
                             <form class="form-horizontal form-label-left" id="special" method="POST" action="../app/save_doctor_specialities.php"  validate>
+<?php echo csrf_field(); ?>
 
                               <div class="item row form-group">
                                 <label class="col-md-12 col-sm-12" for="name">Add Doctor's Specialization <span class="required">*</span>
                                 </label>
                                 <div class="col-md-12 col-sm-12 ">
-                                  <input type="text" name="user" value="<?php echo $user_id; ?>" style="display: none;">
+                                  <input type="text" name="user" value="<?php echo e($user_id); ?>" style="display: none;">
                                   <select class="form-control" required="required" id="specialty" name="specialty">
                                     <?php
                                       $bery = "SELECT * FROM specialties where sp_status = 'ACTIVE' order by sp_name asc";
                                       $h = mysqli_query($con,$bery);
                                       while($tow = mysqli_fetch_assoc($h)){
                                         ?>
-                                        <option value="<?php echo $tow['sp_id']; ?>"><?php echo $tow['sp_name']; ?></option>
+                                        <option value="<?php echo e($tow['sp_id']); ?>"><?php echo e($tow['sp_name']); ?></option>
                                         <?php
                                       }
                                     ?>
@@ -423,7 +433,7 @@ $service = $row1['ds_id'];
                           </div>
                           <div class="col-md-5">
                             <br><br><br>
-                            Names: <?php echo $name; ?><br>
+                            Names: <?php echo e($name); ?><br>
                             Role : Doctor<br>
                             Phone Number:<br>
                             Email : 
@@ -436,7 +446,7 @@ $service = $row1['ds_id'];
                           
                           <div class="col-md-4">
                             <br>
-                            Province: <?php echo $name; ?><br>
+                            Province: <?php echo e($name); ?><br>
                             District : Doctor<br>
                             Sector:<br>
                             Cell : <br>

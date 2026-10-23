@@ -1,7 +1,7 @@
 <?php
 include "../includes/config.php";
 
-$vaccine = strtoupper($con->real_escape_string($_GET['vaccine']));
+$vaccine = strtoupper($con->real_escape_string($_GET['vaccine'] ?? ''));
 
 ?> 
 <div class="">
@@ -40,14 +40,14 @@ $vaccine = strtoupper($con->real_escape_string($_GET['vaccine']));
                           $re1 = mysqli_query($con,$query1);
                           while($rop=mysqli_fetch_assoc($re1)){
                             ?>
-                            <option value="<?php echo $rop['vaccine_id']; ?>"><?php echo $rop['vaccine_name']; ?></option>
+                            <option value="<?php echo e($rop['vaccine_id']); ?>"><?php echo e($rop['vaccine_name']); ?></option>
                             <?php
                           }
                           $query = "SELECT * FROM vaccines where vaccine_status = 'ACTIVE' and vaccine_id <> '{$vaccine}'";
                           $re = mysqli_query($con,$query);
                           while($rop=mysqli_fetch_assoc($re)){
                             ?>
-                            <option value="<?php echo $rop['vaccine_id']; ?>"><?php echo $rop['vaccine_name']; ?></option>
+                            <option value="<?php echo e($rop['vaccine_id']); ?>"><?php echo e($rop['vaccine_name']); ?></option>
                             <?php
                           }
                           ?>
@@ -79,16 +79,16 @@ $vaccine = strtoupper($con->real_escape_string($_GET['vaccine']));
               	?> 
               	
                    <div class="animated flipInY col-md-4 col-sm-12">
-                      <a href="../make-new-appointment/?dahd=<?php echo $row['vi_id']; ?>&cbh=1&aty=3&ddf=1">
+                      <a href="../make-new-appointment/?dahd=<?php echo e($row['vi_id']); ?>&cbh=1&aty=3&ddf=1">
                         <div class="tile-stats" style="background: #2a3f54; color: #fdffe8;  padding-top:20px" width="100%">
                           <div class="icon" style="width: 10px;"><i class="fa fa-caret-square-o-right"></i></div>
                           
-                          <h3 style="text-align: left; max-width: 78%; font-size: 20px;"><?php echo $row['hi_institute']; ?></h3>
+                          <h3 style="text-align: left; max-width: 78%; font-size: 20px;"><?php echo e($row['hi_institute']); ?></h3>
                            <p style="text-align: left; max-width: 78%; font-size: 12px;">
-                           	<?php echo $row['pl_province']; ?> - <?php echo $row['pl_district']; ?> - <?php echo $row['pl_sector']; ?>, <?php echo $row['pl_street']; ?></p>
+                           	<?php echo e($row['pl_province']); ?> - <?php echo e($row['pl_district']); ?> - <?php echo e($row['pl_sector']); ?>, <?php echo e($row['pl_street']); ?></p>
                            	<br>
                            	<p style="text-align: left; max-width: 78%; font-size: 12px;">
-                           	vaccine: <b><?php echo $row['vaccine_name']; ?> </b></p>
+                           	vaccine: <b><?php echo e($row['vaccine_name']); ?> </b></p>
                         </div>
                       </a>
                     </div>

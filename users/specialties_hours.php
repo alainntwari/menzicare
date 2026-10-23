@@ -1,6 +1,10 @@
 <?php
 include "../includes/config.php";
-$ds_id = $_GET['id'];
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
+$ds_id = (int)($_GET['id'] ?? 0);
+if (!can_manage_service($ds_id)) {
+  deny_access();
+}
 ?>
 <div class="row">
   <div class="col-sm-12 text-right"><button class="btn btn-danger">Back</button></div>
@@ -26,10 +30,10 @@ $ds_id = $_GET['id'];
         while($xow = mysqli_fetch_assoc($br)){
           ?>
           <tr>
-            <td><?php echo $xow['da_day']; ?></td>
-            <td><?php echo $xow['da_start_time']; ?></td>
-            <td><?php echo $xow['da_end_time']; ?></td>
-            <td><button class="btn btn-outline-info" onclick="(<?php echo $xow['ds_id']; ?>)">Edit</button></td>
+            <td><?php echo e($xow['da_day']); ?></td>
+            <td><?php echo e($xow['da_start_time']); ?></td>
+            <td><?php echo e($xow['da_end_time']); ?></td>
+            <td><button class="btn btn-outline-info" onclick="(<?php echo e($xow['ds_id']); ?>)">Edit</button></td>
           </tr>
           <?php
         }
@@ -41,12 +45,13 @@ $ds_id = $_GET['id'];
   <div class="col-md-5 col-sm-6">
   	<h4>Add Schedule</h4>
     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/save_doctor_working_hour.php">
+<?php echo csrf_field(); ?>
 
 		<div class="item form-group">
 			<label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Day <span class="required">*</span>
 			</label>
 			<div class="col-md-6 col-sm-6 ">
-				<input type="text" name="ds_id" value="<?php echo $ds_id; ?>" readonly="readonly" style="display: none;">
+				<input type="text" name="ds_id" value="<?php echo e($ds_id); ?>" readonly="readonly" style="display: none;">
 				<select class="form-control" required="required" name="day" id="day">
 					<option value="">Select Day</option>
 					<option value="Monday">Monday</option>

@@ -1,51 +1,59 @@
 <?php
 require '../includes/config.php';
+require('../aionem.net/api/aionem.net.php');
 
-$name = $con->real_escape_string($_POST['name']);
-$phone = $con->real_escape_string($_POST['phone']);
-$email = $con->real_escape_string($_POST['email']);
-$id_number = $con->real_escape_string($_POST['id_number']);
-$institution = $con->real_escape_string($_POST['institution']);
-$role = $con->real_escape_string($_POST['role']);
+// Only super admins and institution admins can create staff accounts
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
 
+$name = trim($_POST['name'] ?? '');
+$phone = preg_replace('/\D/', '', $_POST['phone'] ?? '');
+$email = trim($_POST['email'] ?? '');
+$id_number = trim($_POST['id_number'] ?? '');
+$role = (int)($_POST['role'] ?? 0);
+
+// Staff accounts can only be doctors or institution admins - never super admins
+if (!in_array($role, [ROLE_DOCTOR, ROLE_ADMIN], true)) {
+	alert_redirect('Invalid role selected', '../users/');
+}
+if ($name === '' || $phone === '' || $id_number === '') {
+	alert_redirect('Please fill in all required fields', '../users/');
+}
+
+// Institution admins can only add users to their own institution
+if (current_role() === ROLE_ADMIN) {
+	$institution = current_institution();
+}
+else {
+	$institution = (int)($_POST['institution'] ?? 0);
+}
+if ($institution <= 0 || !db_row("SELECT hi_id FROM healthcare_institutions WHERE hi_id = ?", [$institution])) {
+	alert_redirect('Please select a valid institution', '../users/');
+}
 
 $today_date = date('d-M-Y');
-$by = $_SESSION['id'];
+$code = $role . random_int(10000, 99999);
 
-$code = rand(10000,99999);
-$code = $role.''.$code;
+// Random first password, sent to the new user by SMS (no more shared default password)
+$password = random_password();
 
-$password = '12345';
-
-$qu = "SELECT count(*) from users where id_number = '{$id_number}'";
-$re = mysqli_query($con,$qu);
-$ro = mysqli_fetch_assoc($re);
-if($ro['count(*)'] == 0){
-	// here we are going to insert
-	$query = "INSERT INTO users (name,ref_healthcare_providers,role,joined_date,email,phone_number,id_number,code,password) values ('{$name}','{$institution}','{$role}','{$today_date}','{$email}','{$phone}','{$id_number}','{$code}','{$password}')";
-	$res = mysqli_query($con,$query);
-	if($res){
-		echo "<script>alert('Saved Successfully');window.location='../users/';</script>";
-		exit();
-	}
-	else{
-		echo $name.'<br>';
-		echo $institution.'<br>';
-		echo $role.'<br>';
-		echo $today_date.'<br>';
-		echo $email.'<br>';
-		echo $phone.'<br>';
-		echo $id_number.'<br>';
-		echo $code.'<br>';
-		echo $password.'<br>';
-		//echo "<script>alert('Error while inserting in Database');window.location='../users/';</script>";
-		exit();
-	}
-	
+$ro = db_row("SELECT count(*) AS total FROM users WHERE id_number = ?", [$id_number]);
+if ($ro && $ro['total'] > 0) {
+	alert_redirect('User already exists', '../users/');
 }
-else{
-   echo "<script>alert('User already exists');window.location='../users/';</script>";
-			exit();
+
+// Hashes need users.password VARCHAR(255) - see database/migrations/001_security.sql
+if (!password_column_ready()) {
+	error_log('MenziCare: run database/migrations/001_security.sql (users.password too short for hashes)');
+	alert_redirect('Accounts cannot be created right now. Please contact the system admin', '../users/');
 }
-exit();
- ?>
+
+$res = db_query(
+	"INSERT INTO users (name,ref_healthcare_providers,role,joined_date,email,phone_number,id_number,code,password) VALUES (?,?,?,?,?,?,?,?,?)",
+	[$name, $institution, $role, $today_date, $email, $phone, $id_number, $code, password_hash($password, PASSWORD_DEFAULT)]
+);
+if (!$res) {
+	alert_redirect('Error while saving the user. Please contact the system admin', '../users/');
+}
+
+AioNem_Net_API_SMS_Send_Net('+250' . $phone, 'Your MenziCare account is ready. Login code: ' . $code . ', password: ' . $password);
+alert_redirect('Saved Successfully. The login code and password were sent to the user by SMS', '../users/');

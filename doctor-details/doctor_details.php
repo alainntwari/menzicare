@@ -1,6 +1,6 @@
 <?php
 include "../includes/config.php";
-$user_id = $_GET['id'];
+$user_id = (int)($_GET['id'] ?? 0);
 $div_id = 1;
 $que = "SELECT * FROM users_doctors_specialities_names where user_id = {$user_id}";
 $res = mysqli_query($con,$que);
@@ -23,7 +23,7 @@ $map = $row2['map'];
     <div class="title_left">
       <h3>
         <?php
-        echo $name;
+        echo e($name);
         ?>
       </h3>
     </div>
@@ -32,7 +32,7 @@ $map = $row2['map'];
   <div class="col-md-5 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2><i class="fa fa-bars"></i> <?php echo $name; ?> <small>Profile</small></h2>
+                    <h2><i class="fa fa-bars"></i> <?php echo e($name); ?> <small>Profile</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -81,8 +81,8 @@ $map = $row2['map'];
                                 while($xow5 = mysqli_fetch_assoc($br5)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow5['e_certificate']; ?></td>
-                                    <td><button class="btn btn-outline-danger" onclick="delete_education(<?php echo $xow5['e_id']; ?>)"><b>X</b></button></td>
+                                    <td><?php echo e($xow5['e_certificate']); ?></td>
+                                    <td><button class="btn btn-outline-danger" onclick="delete_education(<?php echo e($xow5['e_id']); ?>)"><b>X</b></button></td>
                                   </tr>
                                   <?php
                                 }
@@ -112,7 +112,7 @@ $map = $row2['map'];
                                 while($xow3 = mysqli_fetch_assoc($br3)){
                                   ?>
                                   <tr>
-                                    <td><a href="<?php echo $xow3['sml_link']; ?>" target="_blanck"><?php echo $xow3['sml_link_type']; ?></a></td>
+                                    <td><a href="<?php echo e_url($xow3['sml_link']); ?>" target="_blanck"><?php echo e($xow3['sml_link_type']); ?></a></td>
                                   </tr>
                                   <?php
                                 }
@@ -145,7 +145,7 @@ $map = $row2['map'];
                                 while($xow2 = mysqli_fetch_assoc($br2)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow2['p_payment']; ?></td>
+                                    <td><?php echo e($xow2['p_payment']); ?></td>
                                   </tr>
                                   <?php
                                 }
@@ -177,7 +177,7 @@ $map = $row2['map'];
                                 while($xow1 = mysqli_fetch_assoc($br1)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow1['i_insurance']; ?></td>
+                                    <td><?php echo e($xow1['i_insurance']); ?></td>
                                   </tr>
                                   <?php
                                 }
@@ -209,7 +209,7 @@ $map = $row2['map'];
                                 while($xow4 = mysqli_fetch_assoc($br4)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow4['price_amount'].' '.$xow4['price_currency']; ?></td>
+                                    <td><?php echo e($xow4['price_amount'].' '.$xow4['price_currency']); ?></td>
                                   </tr>
                                   <?php
                                 }
@@ -241,7 +241,7 @@ $map = $row2['map'];
                                 while($xow = mysqli_fetch_assoc($br)){
                                   ?>
                                   <tr>
-                                    <td><?php echo $xow['sp_name']; ?></td>
+                                    <td><?php echo e($xow['sp_name']); ?></td>
                                   </tr>
                                   <?php
                                 }
@@ -261,7 +261,7 @@ $map = $row2['map'];
                           </div>
                           <div class="col-md-5">
                             <br><br><br>
-                            Names: <?php echo $name; ?><br>
+                            Names: <?php echo e($name); ?><br>
                             Role : Doctor<br>
                             Phone Number:<br>
                             Email : 
@@ -274,7 +274,7 @@ $map = $row2['map'];
                           
                           <div class="col-md-4">
                             <br>
-                            Province: <?php echo $name; ?><br>
+                            Province: <?php echo e($name); ?><br>
                             District : Doctor<br>
                             Sector:<br>
                             Cell : <br>
@@ -295,7 +295,7 @@ $map = $row2['map'];
                                 <div class="col-md-12 col-sm-12 x_panel">
                                   
                                     <div class="x_title">
-                                      <h2><?php echo $row['name']; ?><small>Avalability, Map location, Appointment scheduling</small></h2>
+                                      <h2><?php echo e($row['name']); ?><small>Avalability, Map location, Appointment scheduling</small></h2>
                                       <ul class="nav navbar-right panel_toolbox">
                                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                         </li>
@@ -316,7 +316,7 @@ $map = $row2['map'];
                                     <div class="x_content">
                                       <div class="row" style="background: #f2f5f7;">
                                         <div class="col-md-7 col-sm-12 col-xs-12" style="padding-top: 15px;">
-                                          <div class='row' id="<?php echo 'bo'.$div_id; ?>">
+                                          <div class='row' id="<?php echo e('bo'.$div_id); ?>">
                                            <div class="col-sm-1 col-xs-1" style="text-align: center;">
                                             <h6><b><</b></h6>
                                             <font>Prev</font>
@@ -335,8 +335,8 @@ $map = $row2['map'];
                                                 $day = date("D", $d);
                                                 $day_date = date("j M", $d);
                                                 ?>
-                                                <h6><b><?php echo $day; ?></b></h6>
-                                                <font><?php echo $day_date; ?></font>
+                                                <h6><b><?php echo e($day); ?></b></h6>
+                                                <font><?php echo e($day_date); ?></font>
                                                 <hr style="margin-top: 0px">
 
                                                 <?php 
@@ -353,7 +353,7 @@ $map = $row2['map'];
                                                     $print_time = date("h:i",$current_time);
                                                     ?>
                                                     <div style="padding: 3px;">
-                                                      <div class="text-center timer" style="padding: 3px;"><?php echo $print_time; ?></div>
+                                                      <div class="text-center timer" style="padding: 3px;"><?php echo e($print_time); ?></div>
                                                     </div>
                                                     <?php
                                                     $current_time = $current_time + (30 * 60);
@@ -368,9 +368,9 @@ $map = $row2['map'];
                                           ?> 
                                           
                                           
-                                          <div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo $onclick; ?>">
-                                            <input id="<?php echo 'day'.$div_id; ?>" type="text" value="<?php echo $d; ?>" style="display: none;">
-                                            <input id="<?php echo 'div'.$div_id; ?>" type="text" value="<?php echo $div_id; ?>" style="display: none;">
+                                          <div class="col-sm-1 col-xs-1" style="text-align: center; cursor: pointer;" onclick="<?php echo e($onclick); ?>">
+                                            <input id="<?php echo e('day'.$div_id); ?>" type="text" value="<?php echo e($d); ?>" style="display: none;">
+                                            <input id="<?php echo e('div'.$div_id); ?>" type="text" value="<?php echo e($div_id); ?>" style="display: none;">
                                             <h6><b>></b></h6>
                                             <font>Next</font>
                                             <hr style="margin-top: 0px">
@@ -385,7 +385,7 @@ $map = $row2['map'];
                                         <div class="col-md-5 col-sm-12"> 
                                           <div class="x_panel" style="background: #f2f5f7; border-width: 0px; ">
                                            <div class="x_content">
-                                            <iframe style="border: 0;" src="<?php echo $map;?>"></iframe>
+                                            <iframe style="border: 0;" src="<?php echo e_url($map); ?>"></iframe>
                                            </div>
                                          </div>
 

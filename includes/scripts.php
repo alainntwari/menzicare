@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -3815,8 +3816,9 @@ $("#d50").click(function(){
         {
             var id = intValue;
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET","../app/request_patient_persmission.php?id="+id,false);
-            xmlhttp.send(null);
+            xmlhttp.open("POST","../app/request_patient_persmission.php",false);
+            xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            xmlhttp.send("id="+encodeURIComponent(id)+"&csrf_token="+encodeURIComponent(document.querySelector('meta[name="csrf-token"]').content));
             document.getElementById("otp_area").innerHTML=xmlhttp.responseText; 
 
         }

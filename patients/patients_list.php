@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
   <div class="page-title">
     <div class="title_left">
     </div>
@@ -75,11 +76,11 @@
               ?>
 
               <tr>
-                <td><?php echo $user_name; ?></td>
-                <td><?php echo $row['b_booking_code']; ?></td>
-                <td><?php echo $row['b_appointment_date']; ?> <br>at  <?php echo $row['b_appointment_time']; ?></td>
-                <td><b> <?php echo $row['sp_name']; ?></b></td>
-                <td><?php echo $row['b_status']; ?></td>
+                <td><?php echo e($user_name); ?></td>
+                <td><?php echo e($row['b_booking_code']); ?></td>
+                <td><?php echo e($row['b_appointment_date']); ?> <br>at  <?php echo e($row['b_appointment_time']); ?></td>
+                <td><b> <?php echo e($row['sp_name']); ?></b></td>
+                <td><?php echo e($row['b_status']); ?></td>
                 <?php 
                 if($_SESSION['role'] == 2){
                 ?>
@@ -87,12 +88,13 @@
                     <div class="row">
                       <div class="col-md-12">
                           <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/approve_doctor_appointment.php">
+<?php echo csrf_field(); ?>
 
                               <div class="item form-group">
                                 <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Order number<span class="required">*</span>
                                 </label>
                                 <div class="col-md-8 col-sm-8 ">
-                                  <input type="text" name="booking_id" style="display: none;" value="<?php echo $row['b_id']; ?>" readonly>
+                                  <input type="text" name="booking_id" style="display: none;" value="<?php echo e($row['b_id']); ?>" readonly>
                                   <input type="number" id="order_number" name="order_number" required="required" class="form-control">
                                 </div>
                               </div>
@@ -116,6 +118,7 @@
                     <div class="row">
                       <div class="col-md-12">
                           <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="../app/new-healthcare_user.php">
+<?php echo csrf_field(); ?>
 
                               <div class="item form-group">
                                 <label class="col-form-label col-md-4 col-sm-4 label-align" for="name">Reason<span class="required">*</span>

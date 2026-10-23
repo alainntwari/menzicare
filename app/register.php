@@ -2,34 +2,52 @@
 require '../includes/config.php';
 require('../aionem.net/api/aionem.net.php');
 
-$name = $con->real_escape_string($_POST['name']);
-$phone = $con->real_escape_string($_POST['phone']);
-$email = $con->real_escape_string($_POST['email']);
-$extension = $con->real_escape_string($_POST['extension']);
-$password = $con->real_escape_string($_POST['password']);
+// Step 1 of signup: validate the form, text a code to the phone, and keep the
+// pending account in the session (never in the page). app/new_user.php checks the code.
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$name = trim($_POST['name'] ?? '');
+	$phone = preg_replace('/\D/', '', $_POST['phone'] ?? '');
+	$email = trim($_POST['email'] ?? '');
+	$extension = '+' . preg_replace('/\D/', '', $_POST['extension'] ?? '250');
+	$password = (string)($_POST['password'] ?? '');
+	$password_repeat = (string)($_POST['password-repeat'] ?? '');
 
+	if ($name === '' || $phone === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		alert_redirect('Please fill in your name, a valid email and phone number', '../login/#signup');
+	}
+	if (strlen($password) < 8) {
+		alert_redirect('Your password must be at least 8 characters long', '../login/#signup');
+	}
+	if (!hash_equals($password, $password_repeat)) {
+		alert_redirect('The two passwords do not match', '../login/#signup');
+	}
 
-$today_date = date('d-M-Y');
+	$wait = otp_resend_wait($_SESSION['pending_registration'] ?? null);
+	if ($wait > 0) {
+		alert_redirect('Please wait ' . $wait . ' seconds before requesting a new code', 'register.php');
+	}
 
-$code = rand(100000,999999);
-$code_number = $code;
+	$ro = db_row("SELECT count(*) AS total FROM users WHERE phone_number = ?", [$phone]);
+	if ($ro && $ro['total'] > 0) {
+		alert_redirect('User already exists, please login into your account', '../login/');
+	}
 
-
-$qu = "SELECT count(*) from users where phone_number = '{$phone}'";
-$re = mysqli_query($con,$qu);
-$ro = mysqli_fetch_assoc($re);
-if($ro['count(*)'] == 0){
-	// here we are going to insert
-	
-		$_SESSION['confirmation'] = $code;
-		AioNem_Net_API_SMS_Send_Net($extension.$phone,$code_number." is your verification code for MenziCare account");	
-	
+	$code = otp_generate();
+	$_SESSION['pending_registration'] = otp_record($code, [
+		'name' => $name,
+		'phone' => $phone,
+		'email' => $email,
+		'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+	]);
+	AioNem_Net_API_SMS_Send_Net($extension . $phone, $code . " is your verification code for MenziCare account");
 }
-else{
-	echo "<script>alert('User already exists, please lpgin into your account');window.location='../login/';</script>";
-			//exit();
+elseif (empty($_SESSION['pending_registration'])) {
+	header("location: ../login/#signup");
+	exit();
 }
- ?>
+
+$name = $_SESSION['pending_registration']['name'];
+?>
  <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,31 +81,22 @@ else{
         <div class="animate form login_form">
           <section class="login_content">
             <form action="../app/new_user.php" method="POST" validate>
+              <?php echo csrf_field(); ?>
               <h1>Confirmation</h1>
               We have sent you a 6 digits confirmation code to your phone number , Enter it in the below verification field to proceed
 
                 <div class="clearfix"></div>
                 <br />
               <div>
-                <input id="code" class="form-control" name="code" required="required" placeholder="Enter Verification Code Here" type="number" onkeyup="check_confirmations()">
+                <input id="code" class="form-control" name="code" required="required" placeholder="Enter Verification Code Here" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
               </div>
               <div>
-                <input type="text" name="name" class="form-control" placeholder="Your Full Name" required="required" value="<?php echo $name; ?>" readonly="readonly" />
-              </div>
-              <div>
-                <input type="email" value="<?php echo $email; ?>" id="email" name="email" style="display: none;" class="form-control">
-              </div>
-
-              <div>
-                <input id="name" class="form-control" name="phone" required="required" value="<?php echo $phone; ?>" readonly="readonly" type="text" style="display: none;">
-              </div>
-              <div>
-                <input id="name" class="form-control" name="password" required="required" value="<?php echo $password; ?>" readonly="readonly" type="text" style="display: none;">
+                <input type="text" class="form-control" placeholder="Your Full Name" value="<?php echo e($name); ?>" readonly="readonly" />
               </div>
 
               <div class="col-sm-12 text-center">
               	<div id="submit-area" style="margin-right: 80px;">
-                <input type="submit" class="btn btn-danger disabled" name="submit" value="Submit"> 
+                <input type="submit" class="btn btn-success" name="submit" value="Submit"> 
                </div>
               </div>
 
@@ -113,15 +122,3 @@ else{
     </div>
   </body>
 </html>
- <script type="text/javascript">  
-
-function check_confirmations()
-{
- var xmlhttp = new XMLHttpRequest();
- xmlhttp.open("GET","check_confirmations.php?code="+encodeURIComponent(document.getElementById("code").value),false);
- xmlhttp.send(null);
- document.getElementById("submit-area").innerHTML=xmlhttp.responseText;
-
-}
- 
- </script>

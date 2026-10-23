@@ -1,32 +1,24 @@
 <?php
 include "../includes/config.php";
-$ds_id = $con->real_escape_string($_POST['ds_id']);
-$day = $con->real_escape_string($_POST['day']);
-$start_time = $con->real_escape_string($_POST['start_time']);
-$end_time = $con->real_escape_string($_POST['end_time']);
-$max = $con->real_escape_string($_POST['max']);
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
+$ds_id = (int)($_POST['ds_id'] ?? 0);
+$day = $_POST['day'] ?? '';
+$start_time = $_POST['start_time'] ?? '';
+$end_time = $_POST['end_time'] ?? '';
+$max = (int)($_POST['max'] ?? 0);
 
-$der = "SELECT count(*) from doctors_availability where da_ref_ds_id = '{$ds_id}' and da_day = '{$day}' and da_start_time = '{$start_time}'";
-$ver = mysqli_query($con,$der);
-$cow = mysqli_fetch_assoc($ver);
+if (!can_manage_service($ds_id)) {
+	deny_access();
+}
 
-if($cow['count(*)'] == 0){
- 	$wery = "INSERT INTO doctors_availability (da_ref_ds_id,da_day,da_start_time,da_end_time,da_max_patients) VALUES ('{$ds_id}','{$day}','{$start_time}','{$end_time}','{$max}')";
- 	$res = mysqli_query($con,$wery);
+$cow = db_row("SELECT count(*) AS total from doctors_availability where da_ref_ds_id = ? and da_day = ? and da_start_time = ?", [$ds_id, $day, $start_time]);
+
+if($cow['total'] == 0){
+ 	$res = db_query("INSERT INTO doctors_availability (da_ref_ds_id,da_day,da_start_time,da_end_time,da_max_patients) VALUES (?,?,?,?,?)", [$ds_id, $day, $start_time, $end_time, $max]);
  	if($res){
- 		echo "<script>alert('Successfully saved');window.location='../users/';</script>";
-			exit();
+ 		alert_redirect('Successfully saved', '../users/');
  	}
- 	else{
- 		
- 		echo "<script>alert('Failed to isnert into database');window.location='../users/';</script>";
-			exit();
- 	}
+ 	alert_redirect('Failed to isnert into database', '../users/');
 }
-else{
-	// arleady exists
-	echo "<script>alert('Schedule Arleady saved in database');window.location='../users/';</script>";
-			exit();
-}
-exit();
-?>
+// arleady exists
+alert_redirect('Schedule Arleady saved in database', '../users/');

@@ -1,18 +1,16 @@
 <?php
 include "../includes/config.php";
-$service = $_POST['payment_service'];
-$type = $_POST['payment_type'];
-$payemnt_method = $_POST['payemnt_method'];
+require_role(ROLE_SUPER_ADMIN, ROLE_ADMIN);
+$service = (int)($_POST['payment_service'] ?? 0);
+$type = $_POST['payment_type'] ?? '';
+$payemnt_method = $_POST['payemnt_method'] ?? '';
 
-$qui = "INSERT into payments (p_payment,p_type,p_ref_service) values ('{$payemnt_method}','{$type}','{$service}')";
-$res = mysqli_query($con,$qui);
+if (!can_manage_service($service)) {
+	deny_access();
+}
+
+$res = db_query("INSERT into payments (p_payment,p_type,p_ref_service) values (?,?,?)", [$payemnt_method, $type, $service]);
 if($res){
-	echo "<script>alert('added');window.location='../users/';</script>";
-			exit();
+	alert_redirect('added', '../users/');
 }
-else{
-	echo "<script>alert('Error, please contact super admin');window.location='../users/';</script>";
-			exit();
-}
-exit();
-?>
+alert_redirect('Error, please contact super admin', '../users/');

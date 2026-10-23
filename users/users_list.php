@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
   <div class="page-title">
     <div class="title_left">
       <h3>Users</h3>
@@ -86,14 +87,14 @@
               ?>
 
               <tr>
-                <td><?php echo $user; ?></td>
+                <td><?php echo e($user); ?></td>
                 <?php if($_SESSION['role'] == 1){ ?>
-                    <td><?php echo $institution; ?></td>
+                    <td><?php echo e($institution); ?></td>
                 <?php } ?>
-                <td><?php echo $joined_date; ?></td>
-                <td><?php echo $role; ?></td>
-                <td><?php echo $status; ?></td>
-                <td><button class="btn btn-success" onclick="view_user_details(<?php echo $row['user_id']; ?>)">View</button></td>
+                <td><?php echo e($joined_date); ?></td>
+                <td><?php echo e($role); ?></td>
+                <td><?php echo e($status); ?></td>
+                <td><button class="btn btn-success" onclick="view_user_details(<?php echo e($row['user_id']); ?>)">View</button></td>
               </tr>
               <?php
             }

@@ -1,3 +1,4 @@
+<?php defined('MENZICARE_APP') || exit; ?>
 <?php
 $q = "SELECT * FROM users where user_id = '{$_SESSION['id']}'";
 $rf = mysqli_query($con,$q);
